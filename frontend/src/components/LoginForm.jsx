@@ -1,15 +1,18 @@
 import { LoginUser } from "../api/user";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 function LoginPage() {
   const [userEmail, setUserEmail] = useState("toni@test.com");
   const [userPassword, setUserPassword] = useState("strongpassword");
   const navigate = useNavigate();
+
   async function SubmitForm(e) {
     e.preventDefault();
-    const response = await LoginUser(userEmail, userPassword);
+    const data = await LoginUser(userEmail, userPassword);
 
-    if (response && response.code === "LOGIN_SUCCESS") {
+    if (data && data.success === true) {
+      toast.success(data.message);
       navigate("/dashboard"); // SPA-friendly redirect
     }
   }

@@ -26,7 +26,7 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
+/* io.on("connection", (socket) => {
   console.log("Socket connected:", socket.id);
 
   socket.on("joinChat", (chatId) => {
@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
     io.to(msg.chatId).emit("newMessage", msg);
     console.log("Message sent ", msg);
   });
-});
+}); */
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

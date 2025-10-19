@@ -1,5 +1,5 @@
 @BASE_URL=http://localhost:3000
-@CHAT_ID=68e0ffdcf8406590b9e58f97
+
 
 @TOKEN =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjBlNjllMmJjYjA1Yzg1ZTBjNTJiNyIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidG9uaTEyMyIsImlhdCI6MTc2MDYyNTE2MX0.dh99N_53ab1lLC5NH7W9PLX4dahrl7b98ueIu2Fh8l4
 
@@ -14,11 +14,19 @@ Authorization: Bearer {{TOKEN}}
 
 ### Create group chat 
 POST {{BASE_URL}}/chats/group
+Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
+
 {
+  "name":"Frontend Mentors",
   "participants": ["68f0e6522bcb05c85e0c529e","68f0e83a2bcb05c85e0c5356"]
 }
+
+### Get group chats
+POST {{BASE_URL}}/chats/group/all
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 ### Find chat by user id
 GET {{BASE_URL}}/chats/user
@@ -31,6 +39,6 @@ GET {{BASE_URL}}/chats/all
 Content-Type: application/json
 
 ### Delete chat by ID
-
+@CHAT_ID=68f117fe285f9fb1749de411
 DELETE {{BASE_URL}}/chats/delete/{{CHAT_ID}}
 Content-Type: application/json

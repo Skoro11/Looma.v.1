@@ -1,6 +1,5 @@
 @BASE_URL=http://localhost:3000
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjBlNjYxMmJjYjA1Yzg1ZTBjNTJhNSIsImVtYWlsIjoidG9uaUBleGFtLmNvbSIsInVzZXJuYW1lIjoidG9uaSIsImlhdCI6MTc2MDYxODA5NX0.At-RXeJR83thDJw_efVkluY3HM4m-6s6eBV9gOcuWVg
-
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjM2NTQ4MzZiYjFlNWRiYzg2YWMxMCIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoiVG9uaSIsImlhdCI6MTc2MDc4MTk1MH0.mrvbiX5JpmseuQ_qF-NTSz7G682vaM30jgPD1Rt2YYg
 ### Register User
 
 POST {{BASE_URL}}/auth/register
@@ -8,7 +7,7 @@ Content-Type: application/json
 
 {
   "username": "toni",
-  "email": "toni@exam.com",
+  "email": "toni@exa.mcom",
   "password": "strongpassword"
 }
 
@@ -18,7 +17,7 @@ POST {{BASE_URL}}/auth/login
 Content-Type: application/json
 
 {
- "email": "toni@exam.com",
+ "email": "toni@exa.mcom",
   "password": "strongpassword"
 }
 
@@ -34,13 +33,13 @@ Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 {
-  "friendId":"68e6994f72cc05181b3ae7fb"
+  "friendId":"68f3629bc2d3ee599b365b05"
 }
 
 
 ### Remove friend from a user
 
-DELETE {{BASE_URL}}/user/friends/remove/68e6994f72cc05181b3ae7fb
+DELETE {{BASE_URL}}/user/friends/remove/68f3629bc2d3ee599b365b05
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
@@ -50,3 +49,7 @@ Authorization: Bearer {{TOKEN}}
 GET {{BASE_URL}}/user/friends/all
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
+
+###
+
+DELETE {{BASE_URL}}/user/delete/all

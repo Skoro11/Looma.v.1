@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const ChatSchema = new Schema(
   {
+    name: { type: String },
     participants: [
       { type: Schema.Types.ObjectId, ref: "User", required: true },
     ],

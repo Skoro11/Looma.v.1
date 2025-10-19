@@ -6,6 +6,8 @@ import {
   getAllChats,
   removeChat,
   SendMessage,
+  createGroupChat,
+  getGroupChat,
 } from "../controllers/chatController.js";
 import User from "../models/User.js";
 const router = express.Router();
@@ -35,4 +37,11 @@ sends message to another User
 requires "chatId" and "content" */
 router.post("/message", TokenVerification, SendMessage);
 
+/* POST /chats/createGroupChat
+Creates a group chat requires "participants:[]" */
+router.post("/group", TokenVerification, createGroupChat);
+
+/* GET /chats/group/all
+Fetches all Chats */
+router.post("/group/all", TokenVerification, getGroupChat);
 export default router;

@@ -1,5 +1,11 @@
 @import "tailwindcss";
-
+:root {
+  --color-primary: #95aaff;
+  --color-body: #1d1f2b;
+  --color-accent: #252837;
+  --color-messages: #303346;
+  --color-logo: #ff2aa2;
+}
 html,
 body,
 #root {

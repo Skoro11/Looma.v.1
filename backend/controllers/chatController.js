@@ -41,7 +41,59 @@ export async function createChat(req, res) {
     res.status(500).json({ success: false, errorMessage: error.message });
   }
 }
+export async function createGroupChat(req, res) {
+  try {
+    const { id } = req.user;
+    const { participants, name } = req.body;
 
+    const participantsArray = [participants, id].flat(Infinity);
+    const sortedParticipants = participantsArray.sort();
+    /* console.log(group); */
+    const existingChat = await Chat.findOne({
+      participants: {
+        $all: sortedParticipants,
+        $size: sortedParticipants.length,
+      },
+    });
+
+    /*  if (existingChat) {
+      return res.status(400).json({
+        success: false,
+        code: "CHAT_EXISTS",
+        message: "Chat with these participants already exists",
+        chatId: existingChat._id,
+      });
+    } */
+
+    const chat = await Chat.create({
+      name: name,
+      participants: sortedParticipants,
+    });
+
+    return res.status(201).json({
+      success: true,
+      code: "CHAT_CREATED",
+      chat,
+    });
+    console.log("User id ", id, "Participants id", participants);
+  } catch (error) {
+    console.log("Error with create group chat", error.message);
+  }
+}
+export async function getGroupChat(req, res) {
+  try {
+    const { id } = req.user;
+
+    const chats = await Chat.find({
+      participants: id, // includes this user
+      "participants.2": { $exists: true }, // has at least 3 participants
+    }).populate("participants", "_id username");
+
+    res.status(200).json({ userChats: chats });
+  } catch (error) {
+    console.log("Error with gettingGroupChat", error.message);
+  }
+}
 export async function getChatByUserId(req, res) {
   try {
     const userId = req.user.id;

@@ -7,7 +7,6 @@ export async function RegisterUser(req, res) {
     if (!username || !email || !password) {
       return res.status(400).json({
         success: false,
-        code: "MISSING_FIELDS",
         message: "There are missing fields",
       });
     }
@@ -15,7 +14,6 @@ export async function RegisterUser(req, res) {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        code: "EMAIL_IN_USE",
         message: "Email already in use",
       });
     }
@@ -30,13 +28,11 @@ export async function RegisterUser(req, res) {
     await newUser.save();
     return res.status(201).json({
       success: true,
-      code: "USER_REGISTERED",
       message: "User registered",
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      code: "SERVER_ERROR",
       message: "Something went wrong while registering",
       errorMessage: error.message,
     });
@@ -49,7 +45,6 @@ export async function LoginUser(req, res) {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        code: "MISSING_FIELDS",
         message: "There are missing fields",
       });
     }
@@ -57,7 +52,6 @@ export async function LoginUser(req, res) {
     if (!user) {
       return res.status(404).json({
         success: false,
-        code: "USER_NOT_FOUND",
         message: "User not found",
       });
     }
@@ -70,7 +64,6 @@ export async function LoginUser(req, res) {
     if (!isPasswordCorrrect) {
       return res.status(401).json({
         success: false,
-        code: "INVALID_CREDENTIALS",
         message: "Invalid email or password",
       });
     } else {
@@ -88,7 +81,6 @@ export async function LoginUser(req, res) {
       await user.save();
       return res.status(200).json({
         success: true,
-        code: "LOGIN_SUCCESS",
         message: "Logged in successfully",
         data: {
           user: { _id: user._id, email: user.email, username: user.username },
@@ -98,24 +90,41 @@ export async function LoginUser(req, res) {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      code: "SERVER_ERROR",
       message: "Something went wrong while logging in",
       errorMessage: error.message,
     });
   }
 }
 
-export async function GetAllOtherUsers(req, res) {
+export async function GetAllNonFriends(req, res) {
   try {
     const { id } = req.user;
-    /* console.log("User id", id); */
-    const allUsers = await User.find({});
-    /*  console.log("All Users", allUsers); */
-    const filteredUsers = allUsers.filter(
-      (user) => user._id.toString() !== id.toString()
-    );
-    /* console.log(filteredUsers); */
-    res.json({ users: filteredUsers });
+
+    const mainUser = await User.findById(id);
+    //Gets all main user friends
+    const friendsArray = mainUser.friends || [];
+
+    const friendsAsStrings = friendsArray.map((friend) => friend.toString());
+
+    const mainUserFriends = new Set(friendsAsStrings);
+
+    // Excludes all the users that are mainUser friends and mainUser itself
+
+    const allUsers = await User.find({}, "username _id");
+
+    const currentUserId = id.toString();
+
+    const nonFriends = allUsers.filter((user) => {
+      const userId = user._id.toString();
+
+      if (userId === currentUserId) return false;
+
+      if (mainUserFriends.has(userId)) return false;
+
+      return true;
+    });
+
+    return res.status(200).json({ success: true, user: nonFriends });
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
   }
@@ -136,7 +145,7 @@ export async function AddFriend(req, res) {
       await user.save();
       res.status(201).json({
         success: true,
-        newFriend: { _id: friendId, username: username },
+        user: { _id: friendId, username: username },
       });
     } else {
       res.status(200).json({ success: true, message: "Friend already exists" });
@@ -169,7 +178,7 @@ export async function RemoveFriend(req, res) {
     await findUser.save();
     res.status(200).json({
       success: true,
-      removedFriend: { id: removedFriend, username: friend.username },
+      user: { _id: removedFriend, username: friend.username },
     });
   } catch (error) {
     console.log("Error with RemoveFriend ", error.message);
@@ -180,12 +189,32 @@ export async function GetFriends(req, res) {
   try {
     const { id } = req.user;
 
+    // Fetch user and populate friends
     const user = await User.findById(id).populate("friends", "username _id");
-    const userFriends = user.friends;
 
-    console.log("User ID", userFriends);
-    res.status(200).json({ userFriends: userFriends });
+    // Make sure friends is always an array
+    const friends = user && Array.isArray(user.friends) ? user.friends : [];
+
+    res.status(200).json({
+      success: true,
+      friends: friends,
+      message: "Friends fetched successfully",
+    });
   } catch (error) {
-    console.log("Error with getting friend", error.message);
+    console.error("Error getting friends:", error.message);
+    res.status(500).json({
+      success: false,
+      friends: { friends: [] },
+      message: "Failed to get friends",
+    });
+  }
+}
+
+export async function DeleteAllUsers(req, res) {
+  try {
+    await User.deleteMany({});
+  } catch (error) {
+    console.log("Error with DeleteAllUsers", error.message);
+    res.status(500).json({ error: error.message });
   }
 }
