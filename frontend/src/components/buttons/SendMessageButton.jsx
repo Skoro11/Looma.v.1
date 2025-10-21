@@ -2,7 +2,7 @@ function SendMessageButton({ sendMessage }) {
   return (
     <button
       onClick={sendMessage}
-      className="bg-[var(--color-primary)] p-2 rounded-xl"
+      className="bg-[var(--color-primary)] p-2 rounded-xl cursor-pointer"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -1,11 +1,11 @@
 import RemoveFriendButton from "../buttons/RemoveFriendButton";
 import { useUserContext } from "../../context/UserContext";
 import StartChatButton from "../buttons/StartChatButton";
-export function FriendList({ friends, StartChat, setFriends }) {
-  const { otherUsers, setOtherUsers, userFriends, setUserFriends } =
-    useUserContext();
+export function FriendList() {
+  const { userFriends } = useUserContext();
   return (
     <ul>
+      <h1 className="mx-4">My Friends</h1>
       {userFriends.map((item) => (
         <div
           key={item._id}

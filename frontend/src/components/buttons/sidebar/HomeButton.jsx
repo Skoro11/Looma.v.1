@@ -1,9 +1,9 @@
-import { useChatContext } from "../../context/ChatContext";
-function HomeButton({ listState }) {
-  const { listStateValue } = useChatContext();
+function HomeButton({ listState, listStateValue }) {
   return (
     <button
       onClick={() => listState(listStateValue)}
+      aria-label="Home"
+      title="Home"
       className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
     >
       <svg

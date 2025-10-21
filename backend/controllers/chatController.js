@@ -56,14 +56,13 @@ export async function createGroupChat(req, res) {
       },
     });
 
-    /*  if (existingChat) {
+    if (existingChat) {
       return res.status(400).json({
         success: false,
-        code: "CHAT_EXISTS",
         message: "Chat with these participants already exists",
         chatId: existingChat._id,
       });
-    } */
+    }
 
     const chat = await Chat.create({
       name: name,
@@ -72,10 +71,9 @@ export async function createGroupChat(req, res) {
 
     return res.status(201).json({
       success: true,
-      code: "CHAT_CREATED",
       chat,
+      message: "Group successfully created",
     });
-    console.log("User id ", id, "Participants id", participants);
   } catch (error) {
     console.log("Error with create group chat", error.message);
   }
@@ -89,7 +87,7 @@ export async function getGroupChat(req, res) {
       "participants.2": { $exists: true }, // has at least 3 participants
     }).populate("participants", "_id username");
 
-    res.status(200).json({ userChats: chats });
+    res.status(200).json({ chat: chats });
   } catch (error) {
     console.log("Error with gettingGroupChat", error.message);
   }
@@ -97,18 +95,51 @@ export async function getGroupChat(req, res) {
 export async function getChatByUserId(req, res) {
   try {
     const userId = req.user.id;
-    /*  const userId = "68de7286134823dacb72960e"; */
-    /* console.log("User id", userId); */
+
     const userChats = await Chat.find({ participants: userId }).populate(
       "participants",
       "username _id"
     );
-    res.status(200).json({ userChats });
+    const chatsWithLastMessage = await Promise.all(
+      userChats.map(async (chat) => {
+        const lastMsg = await Message.find({ chatId: chat._id })
+          .sort({ createdAt: -1 })
+          .limit(1)
+          .populate("senderId", "username _id")
+          .lean(); // <-- lean here too
+
+        return {
+          _id: chat._id,
+          name: chat.name || undefined,
+          participants: chat.participants,
+          lastMessage: lastMsg[0] || null,
+          createdAt: chat.createdAt,
+          updatedAt: chat.updatedAt,
+        };
+      })
+    );
+    res.status(200).json({ chat: chatsWithLastMessage });
   } catch (error) {
     console.log("Error with user chats ", error.message);
   }
 }
+export async function getGroupChatByChatId(req, res) {
+  try {
+    const { id } = req.params;
+    const chat = await Chat.findById({ _id: id });
 
+    const messages = await Message.find({ chat_id: id });
+    console.log("Parameters id", chat);
+    res.status(200).json({
+      success: true,
+      chat_id: chat._id,
+      name: chat.name,
+      messages: messages,
+    });
+  } catch (error) {
+    console.log("GetGroupChatByChatId Error", error.message);
+  }
+}
 export async function removeChat(req, res) {
   try {
     const { id } = req.params;
@@ -168,4 +199,18 @@ export async function getAllChats(req, res) {
   const allChats = await Chat.find({});
 
   res.status(200).json({ allChats });
+}
+
+export async function getChatById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const messages = await Message.find({ chatId: id })
+      .populate("senderId", "_id username")
+      .select("senderId content createdAt receiverId chatId");
+
+    res.status(200).json({ chat: messages });
+  } catch (error) {
+    console.log("Error getChatsByID", error.message);
+  }
 }

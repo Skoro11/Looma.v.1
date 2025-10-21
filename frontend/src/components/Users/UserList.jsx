@@ -1,12 +1,11 @@
 import AddFriendButton from "../buttons/AddFriendButton";
-export function UserList({
-  otherUsers,
-  StartChat,
-  setFriends,
-  setActiveUsername,
-}) {
+import { useUserContext } from "../../context/UserContext";
+
+export function UserList() {
+  const { otherUsers, setUserFriends } = useUserContext();
   return (
     <ul>
+      <h1 className="mx-4">Add friends</h1>
       {otherUsers.map((item) => (
         <div
           key={item._id}
@@ -37,7 +36,10 @@ export function UserList({
                 <span className="font-semibold text-whit ">
                   {item.username}
                 </span>
-                <AddFriendButton itemId={item._id} setFriends={setFriends} />{" "}
+                <AddFriendButton
+                  itemId={item._id}
+                  setFriends={setUserFriends}
+                />{" "}
               </div>
             </div>
           </li>

@@ -8,6 +8,8 @@ import {
   SendMessage,
   createGroupChat,
   getGroupChat,
+  getGroupChatByChatId,
+  getChatById,
 } from "../controllers/chatController.js";
 import User from "../models/User.js";
 const router = express.Router();
@@ -44,4 +46,12 @@ router.post("/group", TokenVerification, createGroupChat);
 /* GET /chats/group/all
 Fetches all Chats */
 router.post("/group/all", TokenVerification, getGroupChat);
+
+/* GET /chats/group/{:id}
+Gets group chat based on chat id */
+router.get("/group/{:id}", getGroupChatByChatId);
 export default router;
+
+/* GET /chats/{:id}
+Get chat based on id */
+router.get("/{:id}", getChatById);

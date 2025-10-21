@@ -2,6 +2,8 @@ function SettingsButton({ listState, listStateValue }) {
   return (
     <button
       onClick={() => listState(listStateValue)}
+      aria-label="Settings"
+      title="Settings"
       className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
     >
       <svg

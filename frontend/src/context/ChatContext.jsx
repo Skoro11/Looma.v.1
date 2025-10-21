@@ -4,16 +4,23 @@ const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
+  const [allUserChats, setAllUserChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const [activeUserId, setActiveUserId] = useState();
   const [activeUsername, setActiveUsername] = useState();
   const [group, setGroup] = useState([]);
-  const [listState, setListState] = useState("addUsers");
+  const [listState, setListState] = useState("chats");
   const [isChatVisible, setIsChatVisible] = useState(false);
+
+  const [localGroup, setLocalGroup] = useState([]);
+  const [groupName, setGroupName] = useState("Frontend Mentors");
+
   return (
     <ChatContext.Provider
       value={{
+        allUserChats,
+        setAllUserChats,
         messages,
         setMessages,
         currentChat,
@@ -30,6 +37,10 @@ export const ChatProvider = ({ children }) => {
         setListState,
         isChatVisible,
         setIsChatVisible,
+        localGroup,
+        setLocalGroup,
+        groupName,
+        setGroupName,
       }}
     >
       {children}

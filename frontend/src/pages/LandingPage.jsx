@@ -7,21 +7,24 @@ import { UserList } from "../components/Users/UserList";
 import { FriendList } from "../components/Users/FriendList";
 import { getHoursAndMinutes } from "../helpers/TimeConverter";
 import GroupList from "../components/Users/GroupList";
-import HomeButton from "../components/buttons/HomeButton";
-import ChatsButton from "../components/buttons/ChatsButton";
-import ContactsButton from "../components/buttons/ContactsButton";
-import GroupButton from "../components/buttons/GroupButton";
-import SettingsButton from "../components/buttons/SettingsButton";
-import AccountButton from "../components/buttons/AccountButton";
+import HomeButton from "../components/buttons/sidebar/HomeButton";
+import ChatsButton from "../components/buttons/sidebar/ChatsButton";
+import ContactsButton from "../components/buttons/sidebar/ContactsButton";
+import GroupButton from "../components/buttons/sidebar/GroupButton";
+import SettingsButton from "../components/buttons/sidebar/SettingsButton";
+import AccountButton from "../components/buttons/sidebar/AccountButton";
 import SearchBar from "../components/SearchBar";
 import SendMessageButton from "../components/buttons/SendMessageButton";
 import UserIcon from "../components/icons/UserIcon";
 import DeleteChatButton from "../components/buttons/DeleteChatButton";
 import RemoveFriendButton from "../components/buttons/RemoveFriendButton";
+import FriendsButton from "../components/buttons/sidebar/FriendsButton";
 import { useChatContext } from "../context/ChatContext";
 import { useUserContext } from "../context/UserContext";
 import { fetchUserFriends, getNonFriends } from "../api/user";
 import { CreateOrOpenChat, RemoveChat, sendAMessage } from "../api/chat";
+import AccountList from "../components/Users/AccountList";
+import { ChatsList } from "../components/Users/ChatsList";
 const socket = io("http://localhost:3000");
 
 export function LandingPage() {
@@ -50,10 +53,12 @@ export function LandingPage() {
     setListState,
     isChatVisible,
     setIsChatVisible,
+    allUserChats,
+    setAllUserChats,
   } = useChatContext();
   const messagesEndRef = useRef(null);
   useEffect(() => {
-    console.log("userFriends changed:", userFriends);
+    /*  console.log("userFriends changed:", userFriends); */
   }, [userFriends]);
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -87,8 +92,8 @@ export function LandingPage() {
     console.log("Start chat response data", response.data);
     const chatId = response.data.chat;
     setCurrentChat(chatId);
-    /*       socket.emit("joinChat", chatId);
-     */ const messages = response.data.messages;
+    socket.emit("joinChat", chatId);
+    const messages = response.data.messages;
     console.log("Response Messages", messages);
     setMessages(messages);
   }
@@ -97,6 +102,14 @@ export function LandingPage() {
     const response = await RemoveChat(chat_id);
     if (response.data.success === true) {
       toast.success("Chat deleted successfully");
+
+      let filtered = group.filter((u) => u._id !== chat_id);
+      setGroup(filtered);
+      const allChats = allUserChats.filter((item) => item.chatId !== chat_id);
+      console.log("AllChats", allChats);
+      setAllUserChats(allChats);
+      setCurrentChat();
+
       setMessages([]);
       setCurrentChat();
       setIsChatVisible(false);
@@ -146,97 +159,51 @@ export function LandingPage() {
 
   return (
     <div className="max-w-[1400px] mx-auto pt-10">
-      <div className="bg-[var(--color-body)] shadow-xl rounded-2xl p-10 text-white ">
-        <h1 className="flex items-center justify-between mb-6 w-full">
-          <img
-            src="looma.png"
-            alt="Looma Logo"
-            className="w-10 h-10 object-contain"
-          />
-          <span>{user.username}</span>
-          <a href="/" className="text-gray-500">
-            <button className="cursor-pointer bg-red-400 p-2 rounded text-white hover:bg-red-200">
-              {" "}
-              Logout
-            </button>
-          </a>
-        </h1>
-        <div>
-          {" "}
-          <h1>
-            Chat Messages || UserId -- {user.id}{" "}
-            {currentChat ? (
-              <button
-                onClick={() => DeleteChat(currentChat)}
-                className="float-right bg-red-100 p-2 "
-              >
-                Delete Chat
-              </button>
-            ) : (
-              <button></button>
-            )}{" "}
-          </h1>
-          <h1>Current Chat {currentChat}</h1>
-        </div>
+      <div className="bg-[var(--color-body)] shadow-xl rounded-2xl p-3 text-white ">
+        {/* <h1 className="flex items-center justify-between mb-6 w-full"></h1> */}
+        <div> {<h1>Current Chat {currentChat}</h1>}</div>
         <div className="flex">
-          <nav className="bg-[var(--color-primary)] w-1/15 flex flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
+          <nav className=" bg-[var(--color-primary)] w-1/15 flex flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
             <div className="flex flex-col gap-3 items-center">
-              <HomeButton listStateValue={""} />
+              {/* <HomeButton listState={setListState} listStateValue={""} /> */}
 
-              <ChatsButton
-                listState={setListState}
-                listStateValue={"friends"}
-              />
+              <ChatsButton listState={setListState} listStateValue={"chats"} />
 
               <ContactsButton
                 listState={setListState}
                 listStateValue="addUsers"
               />
+              <FriendsButton
+                listState={setListState}
+                listStateValue="friends"
+              />
+              <GroupButton listState={setListState} listStateValue={"group"} />
 
-              <GroupButton listState={setListState} listStateValue="group" />
-
-              <SettingsButton listState={setListState} listStateValue="" />
+              {/* <SettingsButton listState={setListState} listStateValue="" /> */}
             </div>
             <div className="mt-2">
               <AccountButton
                 listState={setListState}
-                listStateValue="friends"
+                listStateValue="userAccount"
               />
             </div>
           </nav>
 
-          <div className="border w-1/5 bg-[var(--color-accent)] ">
+          <div className=" rounded-r-xl w-1/5 bg-[var(--color-accent)] ">
             <SearchBar />
             <ul className="">
               {(() => {
                 switch (listState) {
+                  case "chats":
+                    return <ChatsList />;
                   case "friends":
-                    return (
-                      <FriendList
-                        friends={userFriends}
-                        StartChat={StartChat}
-                        setFriends={setUserFriends}
-                      />
-                    );
+                    return <FriendList />;
                   case "addUsers":
-                    return (
-                      <UserList
-                        otherUsers={otherUsers}
-                        StartChat={StartChat}
-                        setFriends={setUserFriends}
-                        setActiveUsername={setActiveUsername}
-                      />
-                    );
+                    return <UserList />;
                   case "group":
-                    return (
-                      <GroupList
-                        group={group}
-                        setGroup={setGroup}
-                        users={userFriends}
-                        setChat={setCurrentChat}
-                        setMessages={setMessages}
-                      />
-                    );
+                    return <GroupList />;
+                  case "userAccount":
+                    return <AccountList />;
                   default:
                     return <p>Nothing selected</p>;
                 }
@@ -244,10 +211,10 @@ export function LandingPage() {
             </ul>
           </div>
 
-          <div className="border w-full relative ">
+          <div className=" w-full relative ">
             {isChatVisible ? (
               <div>
-                <div className="mx-2 bg-[var(--color-messages)] rounded-xl mt-4 mb-2 py-2 pl-3 flex items-center justify-between">
+                <div className="mx-2 bg-[var(--color-messages)] rounded-xl  mb-2 py-2 pl-3 flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="mr-2">
                       <UserIcon />
@@ -255,14 +222,7 @@ export function LandingPage() {
                     <span>{activeUsername} </span>
                   </div>
 
-                  <div className="mr-2 flex gap-5">
-                    <span>
-                      <RemoveFriendButton
-                        friends={userFriends}
-                        setFriends={setUserFriends}
-                        itemId={activeUserId}
-                      />
-                    </span>
+                  <div className="mr-4">
                     <span>
                       <DeleteChatButton
                         deleteChat={() => DeleteChat(currentChat)}
@@ -274,7 +234,9 @@ export function LandingPage() {
                 <ul className="h-100 overflow-y-auto   ">
                   {messages.map((message) => (
                     <li key={message._id}>
-                      {message.senderId._id === user.id ? (
+                      {/* <div>{JSON.stringify(message)}</div> */}
+                      {message.senderId._id === user.id ||
+                      message.senderId === user.id ? (
                         <div className="text-right ">
                           <h1 className="">
                             <span className="font-bold ">
@@ -282,11 +244,13 @@ export function LandingPage() {
                             </span>
                           </h1>
                           <div className="flex justify-end my-2">
-                            <p className="bg-[var(--color-primary)] w-max py-1 px-3 rounded-lg text-white">
+                            <p className="bg-[var(--color-primary)] w-max py-1 px-3 mr-2 rounded-lg text-white">
                               {message.content}
                             </p>
                           </div>
-                          {getHoursAndMinutes(message.createdAt)}{" "}
+                          <span className="mr-2">
+                            {getHoursAndMinutes(message.createdAt)}{" "}
+                          </span>
                         </div>
                       ) : (
                         <div className="text-left">
@@ -308,7 +272,7 @@ export function LandingPage() {
                   ))}
                 </ul>
 
-                <div className="w-full flex px-2 my-5 ">
+                <div className="w-full flex px-2 my-3 ">
                   <input
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
@@ -328,26 +292,6 @@ export function LandingPage() {
             )}
           </div>
         </div>
-        <h1>Chat Visible</h1>
-        {isChatVisible ? <p>True</p> : <p>False</p>}
-        {isChatVisible}
-        <h1>Friends</h1>
-        {userFriends.map((item, index) => {
-          return (
-            <li key={index} className="">
-              {item.username}
-              {item._id}
-            </li>
-          );
-        })}
-        <h1>Other users</h1>
-        {otherUsers.map((item, index) => {
-          return (
-            <li key={index}>
-              {item.username} {item._id}
-            </li>
-          );
-        })}
       </div>
     </div>
   );

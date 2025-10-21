@@ -1,7 +1,7 @@
 @BASE_URL=http://localhost:3000
 
 
-@TOKEN =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjBlNjllMmJjYjA1Yzg1ZTBjNTJiNyIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidG9uaTEyMyIsImlhdCI6MTc2MDYyNTE2MX0.dh99N_53ab1lLC5NH7W9PLX4dahrl7b98ueIu2Fh8l4
+@TOKEN =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjM2NTQ4MzZiYjFlNWRiYzg2YWMxMCIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoiVG9uaSIsImlhdCI6MTc2MDk2NzA4MH0.75t3ZyM1DXUyhuKWevsCR_vBRWUw7qBg74Qf8CmEarU
 
 ### Create chat by FriendId
 POST {{BASE_URL}}/chats
@@ -42,3 +42,10 @@ Content-Type: application/json
 @CHAT_ID=68f117fe285f9fb1749de411
 DELETE {{BASE_URL}}/chats/delete/{{CHAT_ID}}
 Content-Type: application/json
+
+
+### Get group chat based on chat Id
+GET {{BASE_URL}}/chats/group/68f64c257cd0ff35b409aa25
+
+### Get chat based on id 
+GET {{BASE_URL}}/chats/68f768aff70537020bf6f19e

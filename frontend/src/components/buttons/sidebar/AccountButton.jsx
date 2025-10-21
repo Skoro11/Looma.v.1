@@ -2,6 +2,8 @@ function AccountButton({ listState, listStateValue }) {
   return (
     <button
       onClick={() => listState(listStateValue)}
+      aria-label="Account details"
+      title="Account details"
       className="p-1 rounded-full bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
     >
       <svg

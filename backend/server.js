@@ -8,6 +8,7 @@ import http from "http";
 import AuthRouter from "./routes/auth-route.js";
 import UserRouter from "./routes/user-route.js";
 import ChatRouter from "./routes/chat-route.js";
+import { chatSockets } from "./socket/chatSockets.js";
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -26,19 +27,7 @@ const io = new Server(server, {
   },
 });
 
-/* io.on("connection", (socket) => {
-  console.log("Socket connected:", socket.id);
-
-  socket.on("joinChat", (chatId) => {
-    socket.join(chatId);
-    console.log("Socket " + socket.id + " joined room " + chatId);
-  });
-
-  socket.on("sendMessage", (msg) => {
-    io.to(msg.chatId).emit("newMessage", msg);
-    console.log("Message sent ", msg);
-  });
-}); */
+chatSockets(io);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
