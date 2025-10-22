@@ -9,11 +9,15 @@ function LoginPage() {
 
   async function SubmitForm(e) {
     e.preventDefault();
-    const data = await LoginUser(userEmail, userPassword);
+    try {
+      const data = await LoginUser(userEmail, userPassword);
 
-    if (data && data.success === true) {
-      toast.success(data.message);
-      navigate("/dashboard"); // SPA-friendly redirect
+      if (data && data.success === true) {
+        toast.success(data.message);
+        navigate("/dashboard"); // SPA-friendly redirect
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
   return (

@@ -38,59 +38,75 @@ export default function GroupList() {
     setLocalGroup(filtered);
   }
   async function createGroup() {
-    if (!groupName) {
-      toast.error("Group Name required");
-      return;
-    }
-    if (localGroup.length < 2) {
-      toast.error("Minimum 2 Participants required");
-      return;
-    }
+    try {
+      if (!groupName) {
+        toast.error("Group Name required");
+        return;
+      }
+      if (localGroup.length < 2) {
+        toast.error("Minimum 2 Participants required");
+        return;
+      }
 
-    const response = await createGroupChat(localGroup, groupName);
+      const response = await createGroupChat(localGroup, groupName);
 
-    if (response.data.success === true) {
-      toast.success(response.data.message);
+      if (response.data.success === true) {
+        toast.success(response.data.message);
+      }
+      if (response.data.success === false) {
+        toast.error(response.data.message);
+      }
+      getGroup();
+      setGroupName("");
+      /* setGroup(localGroup); */
+      setLocalGroup([]);
+    } catch (error) {
+      toast.error(error.message);
     }
-    if (response.data.success === false) {
-      toast.error(response.data.message);
-    }
-    getGroup();
-    setGroupName("");
-    /* setGroup(localGroup); */
-    setLocalGroup([]);
   }
 
   async function getGroup() {
-    const response = await getGroupChat();
-    const chatsArray = response.data.chat;
-    if (response.status === 200) {
-      setGroup(chatsArray);
+    try {
+      const response = await getGroupChat();
+      const chatsArray = response.data.chat;
+      if (response.status === 200) {
+        setGroup(chatsArray);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
 
   async function DeleteChat(chatId) {
-    const response = await deleteGroupChat(chatId);
-    if (response.status === 200) {
-      let filtered = group.filter((u) => u._id !== chatId);
-      setGroup(filtered);
-      setCurrentChat();
-      setMessages();
-      setCurrentChat();
-      setActiveUserId();
-      setActiveUsername();
-      setIsChatVisible(false);
+    try {
+      const response = await deleteGroupChat(chatId);
+      if (response.status === 200) {
+        let filtered = group.filter((u) => u._id !== chatId);
+        setGroup(filtered);
+        setCurrentChat();
+        setMessages();
+        setCurrentChat();
+        setActiveUserId();
+        setActiveUsername();
+        setIsChatVisible(false);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
 
   async function getGroupChatByChatId(chatId) {
-    const response = await getGroupChatWithChatId(chatId);
-    if (response) {
-      setMessages(response.data.messages);
-      setCurrentChat(response.data.chat_id);
-      setActiveUserId(response.data.chat_id);
-      setActiveUsername(response.data.name);
-      setIsChatVisible(true);
+    try {
+      const response = await getGroupChatWithChatId(chatId);
+      if (response) {
+        setMessages(response.data.messages);
+        setCurrentChat(response.data.chat_id);
+        setActiveUserId(response.data.chat_id);
+        setActiveUsername(response.data.name);
+        setIsChatVisible(true);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
   useEffect(() => {

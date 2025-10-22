@@ -3,7 +3,7 @@ import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { toast } from "react-toastify";
 export function ChatsListMobile() {
   const {
     setIsMobileChatVisible,
@@ -21,28 +21,32 @@ export function ChatsListMobile() {
   let myId = user.id;
 
   async function fetchUserChats() {
-    const response = await getAllUserChats();
-    const chats = response.data.chat;
-    const sideBarChats = chats.map((chat) => {
-      if (chat.participants.length === 2) {
-        const other = chat.participants.find((item) => item._id !== myId);
-        const lastMessage = chat.lastMessage;
-        return {
-          chatId: chat._id,
-          name: other.username,
-          lastMessage: lastMessage || "",
-        };
-      } else {
-        const lastMessage = chat.lastMessage;
-        return {
-          chatId: chat._id,
-          name: chat.name,
-          lastMessage: lastMessage || "",
-        };
-      }
-    });
+    try {
+      const response = await getAllUserChats();
+      const chats = response.data.chat;
+      const sideBarChats = chats.map((chat) => {
+        if (chat.participants.length === 2) {
+          const other = chat.participants.find((item) => item._id !== myId);
+          const lastMessage = chat.lastMessage;
+          return {
+            chatId: chat._id,
+            name: other.username,
+            lastMessage: lastMessage || "",
+          };
+        } else {
+          const lastMessage = chat.lastMessage;
+          return {
+            chatId: chat._id,
+            name: chat.name,
+            lastMessage: lastMessage || "",
+          };
+        }
+      });
 
-    setAllUserChats(sideBarChats);
+      setAllUserChats(sideBarChats);
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
   useEffect(() => {
     fetchUserChats();

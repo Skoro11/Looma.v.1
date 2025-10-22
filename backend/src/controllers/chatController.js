@@ -167,7 +167,7 @@ export async function SendMessage(req, res) {
     const { chatId, content } = req.body;
 
     if (!chatId || !content) {
-      return res.status(400).json({ error: "Missing fields" });
+      return res.status(400).json({ message: "No Message Data" });
     }
     const chat = await Chat.findById(chatId);
 

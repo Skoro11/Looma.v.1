@@ -8,11 +8,15 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   async function SubmitForm(e) {
-    e.preventDefault();
-    const data = await RegisterUser(username, userEmail, password);
-    if (data && data.success === true) {
-      toast.success(data.message);
-      navigate("/");
+    try {
+      e.preventDefault();
+      const data = await RegisterUser(username, userEmail, password);
+      if (data && data.success === true) {
+        toast.success(data.message);
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
   return (

@@ -25,34 +25,42 @@ export function GroupListMobile() {
     setLocalGroup(filtered);
   }
   async function createGroup() {
-    if (!groupName) {
-      toast.error("Group Name required");
-      return;
-    }
-    if (localGroup.length < 2) {
-      toast.error("Minimum 2 Participants required");
-      return;
-    }
+    try {
+      if (!groupName) {
+        toast.error("Group Name required");
+        return;
+      }
+      if (localGroup.length < 2) {
+        toast.error("Minimum 2 Participants required");
+        return;
+      }
 
-    const response = await createGroupChat(localGroup, groupName);
+      const response = await createGroupChat(localGroup, groupName);
 
-    if (response.data.success === true) {
-      toast.success(response.data.message);
+      if (response.data.success === true) {
+        toast.success(response.data.message);
+      }
+      if (response.data.success === false) {
+        toast.error(response.data.message);
+      }
+      getGroup();
+      setGroupName("");
+      setListState("chats");
+      setLocalGroup([]);
+    } catch (error) {
+      toast.error(error.message);
     }
-    if (response.data.success === false) {
-      toast.error(response.data.message);
-    }
-    getGroup();
-    setGroupName("");
-    setListState("chats");
-    setLocalGroup([]);
   }
 
   async function getGroup() {
-    const response = await getGroupChat();
-    const chatsArray = response.data.chat;
-    if (response.status === 200) {
-      setGroup(chatsArray);
+    try {
+      const response = await getGroupChat();
+      const chatsArray = response.data.chat;
+      if (response.status === 200) {
+        setGroup(chatsArray);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
 

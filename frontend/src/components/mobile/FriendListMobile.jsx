@@ -2,7 +2,7 @@ import RemoveFriendButton from "../buttons/RemoveFriendButton";
 import { useUserContext } from "../../context/UserContext";
 import { useChatContext } from "../../context/ChatContext";
 import { CreateOrOpenChat } from "../../api/chat";
-
+import { toast } from "react-toastify";
 export function FriendListMobile({ setIsMobileChatVisible }) {
   const {
     setIsChatVisible,
@@ -14,17 +14,21 @@ export function FriendListMobile({ setIsMobileChatVisible }) {
   } = useChatContext();
   const { userFriends } = useUserContext();
   async function StartChat(friend_id, itemUsername) {
-    const response = await CreateOrOpenChat(friend_id);
-    if (response.data.success === true) {
-      setIsChatVisible(true);
+    try {
+      const response = await CreateOrOpenChat(friend_id);
+      if (response.data.success === true) {
+        setIsChatVisible(true);
+      }
+      setActiveUserId(friend_id);
+      setActiveUsername(itemUsername);
+      const chatId = response.data.chat;
+      setCurrentChat(chatId);
+      /*       socket.emit("joinChat", chatId);
+       */ const messages = response.data.messages;
+      setMessages(messages);
+    } catch (error) {
+      toast.error(error.message);
     }
-    setActiveUserId(friend_id);
-    setActiveUsername(itemUsername);
-    const chatId = response.data.chat;
-    setCurrentChat(chatId);
-    /*       socket.emit("joinChat", chatId);
-     */ const messages = response.data.messages;
-    setMessages(messages);
   }
   return (
     <ul>

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { getAllUserChats, getChatBasedOnId } from "../../api/chat";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
+import { toast } from "react-toastify";
 export function ChatsList() {
   const {
     allUserChats,
@@ -16,43 +17,51 @@ export function ChatsList() {
 
   let myId = user.id;
   async function fetchUserChats() {
-    const response = await getAllUserChats();
-    const chats = response.data.chat;
+    try {
+      const response = await getAllUserChats();
+      const chats = response.data.chat;
 
-    const sideBarChats = chats.map((chat) => {
-      if (chat.participants.length === 2) {
-        const other = chat.participants.find((item) => item._id !== myId);
+      const sideBarChats = chats.map((chat) => {
+        if (chat.participants.length === 2) {
+          const other = chat.participants.find((item) => item._id !== myId);
 
-        const lastMessage = chat.lastMessage;
+          const lastMessage = chat.lastMessage;
 
-        return {
-          chatId: chat._id,
-          name: other.username,
-          lastMessage: lastMessage || "",
-        };
-      } else {
-        const lastMessage = chat.lastMessage;
-        return {
-          chatId: chat._id,
-          name: chat.name,
-          lastMessage: lastMessage || "",
-        };
-      }
-    });
+          return {
+            chatId: chat._id,
+            name: other.username,
+            lastMessage: lastMessage || "",
+          };
+        } else {
+          const lastMessage = chat.lastMessage;
+          return {
+            chatId: chat._id,
+            name: chat.name,
+            lastMessage: lastMessage || "",
+          };
+        }
+      });
 
-    setAllUserChats(sideBarChats);
+      setAllUserChats(sideBarChats);
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
 
   async function openChat(chatId, username) {
-    const response = await getChatBasedOnId(chatId);
+    try {
+      const response = await getChatBasedOnId(chatId);
 
-    if (response) {
-      setCurrentChat(chatId);
-      setMessages(response.data.chat);
-      setIsChatVisible(true);
+      if (response) {
+        setCurrentChat(chatId);
+        setMessages(response.data.chat);
+        setIsChatVisible(true);
+      }
+
+      setActiveUsername(username);
+    } catch (error) {
+      toast.error(error.message);
     }
-
-    setActiveUsername(username);
   }
   useEffect(() => {
     fetchUserChats();

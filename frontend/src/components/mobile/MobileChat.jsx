@@ -34,19 +34,23 @@ export function MobileChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   async function DeleteChat(chat_id) {
-    const response = await RemoveChat(chat_id);
-    if (response.data.success === true) {
-      toast.success("Chat deleted successfully");
+    try {
+      const response = await RemoveChat(chat_id);
+      if (response.data.success === true) {
+        toast.success("Chat deleted successfully");
 
-      let filtered = group.filter((u) => u._id !== chat_id);
-      setGroup(filtered);
-      const allChats = allUserChats.filter((item) => item.chatId !== chat_id);
-      setAllUserChats(allChats);
-      setCurrentChat();
+        let filtered = group.filter((u) => u._id !== chat_id);
+        setGroup(filtered);
+        const allChats = allUserChats.filter((item) => item.chatId !== chat_id);
+        setAllUserChats(allChats);
+        setCurrentChat();
 
-      setMessages([]);
-      setCurrentChat();
-      setIsMobileChatVisible(false);
+        setMessages([]);
+        setCurrentChat();
+        setIsMobileChatVisible(false);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   }
   return (

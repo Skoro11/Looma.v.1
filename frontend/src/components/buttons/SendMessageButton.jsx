@@ -1,22 +1,27 @@
 import { sendAMessage } from "../../api/chat";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
+import { toast } from "react-toastify";
 /* import { socket } from "../../utils/socket"; */
 function SendMessageButton() {
   const { currentChat, messageInput, setMessageInput } = useChatContext();
   const { user } = useUserContext();
   async function sendMessage() {
-    const response = await sendAMessage(currentChat, messageInput);
-    if (response.status === 200) {
-      const newMessage = {
-        chatId: currentChat,
-        senderId: { _id: user.id, username: user.username },
-        content: messageInput,
-        createdAt: response.data.message.createdAt,
-      };
-      /*      socket.emit("sendMessage", newMessage); */
+    try {
+      const response = await sendAMessage(currentChat, messageInput);
+      if (response.status === 200) {
+        const newMessage = {
+          chatId: currentChat,
+          senderId: { _id: user.id, username: user.username },
+          content: messageInput,
+          createdAt: response.data.message.createdAt,
+        };
+        /*      socket.emit("sendMessage", newMessage); */
+      }
+      setMessageInput("");
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
-    setMessageInput("");
   }
   return (
     <button

@@ -11,18 +11,22 @@ export function StartChatButton({ itemId, itemUsername }) {
     setActiveUsername,
   } = useChatContext();
   async function StartChat(friend_id) {
-    const response = await CreateOrOpenChat(friend_id);
-    if (response.data.success === true) {
-      toast.success("Chat successfully created");
-      setIsChatVisible(true);
+    try {
+      const response = await CreateOrOpenChat(friend_id);
+      if (response.data.success === true) {
+        toast.success("Chat successfully created");
+        setIsChatVisible(true);
+      }
+      setActiveUserId(friend_id);
+      setActiveUsername(itemUsername);
+      const chatId = response.data.chat;
+      setCurrentChat(chatId);
+      /*   socket.emit("joinChat", chatId); */
+      const messages = response.data.messages;
+      setMessages(messages);
+    } catch (error) {
+      toast.error(error.message);
     }
-    setActiveUserId(friend_id);
-    setActiveUsername(itemUsername);
-    const chatId = response.data.chat;
-    setCurrentChat(chatId);
-    /*   socket.emit("joinChat", chatId); */
-    const messages = response.data.messages;
-    setMessages(messages);
   }
   return (
     <button className="cursor-pointer" onClick={() => StartChat(itemId)}>
