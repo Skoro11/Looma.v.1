@@ -5,23 +5,24 @@ function RemoveFriendButton({ itemId }) {
   const { setOtherUsers, setUserFriends, userFriends } = useUserContext();
 
   async function RemoveFriendAxios(userId) {
-    const response = await removeFriend(userId);
-    if (response.data.success === true) {
-      const removedFriend = response.data.user;
+    try {
+      const response = await removeFriend(userId);
+      if (response.data.success === true) {
+        const removedFriend = response.data.user;
 
-      toast.success("User removed from friends");
+        toast.success("User removed from friends");
 
-      setOtherUsers((prev) => [...prev, removedFriend]);
+        setOtherUsers((prev) => [...prev, removedFriend]);
 
-      const updatedFriends = userFriends.filter(
-        (friend) => friend._id != userId
-      );
-      console.log("Updated Users");
-      console.log("Updated friends", updatedFriends);
-      setUserFriends(updatedFriends);
+        const updatedFriends = userFriends.filter(
+          (friend) => friend._id != userId
+        );
+
+        setUserFriends(updatedFriends);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
-
-    console.log("Response Remove friend", response.data.user);
   }
   return (
     <div

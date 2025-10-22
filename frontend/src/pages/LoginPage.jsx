@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function LoginPage() {
-  const [userEmail, setUserEmail] = useState("toni@test.com");
-  const [userPassword, setUserPassword] = useState("strongpassword");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const navigate = useNavigate();
 
   async function SubmitForm(e) {

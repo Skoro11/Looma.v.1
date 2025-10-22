@@ -35,7 +35,6 @@ export default function GroupList() {
   }
   function removeUserFromTempGroup(userId) {
     let filtered = localGroup.filter((u) => u._id !== userId);
-    /*  console.log("Removed", filtered); */
     setLocalGroup(filtered);
   }
   async function createGroup() {
@@ -50,8 +49,6 @@ export default function GroupList() {
 
     const response = await createGroupChat(localGroup, groupName);
 
-    const chat = response.data;
-    console.log("Chat response", chat);
     if (response.data.success === true) {
       toast.success(response.data.message);
     }
@@ -70,12 +67,10 @@ export default function GroupList() {
     if (response.status === 200) {
       setGroup(chatsArray);
     }
-    console.log("GetGroup", response);
   }
 
   async function DeleteChat(chatId) {
     const response = await deleteGroupChat(chatId);
-    console.log("Response delete chat", response);
     if (response.status === 200) {
       let filtered = group.filter((u) => u._id !== chatId);
       setGroup(filtered);
@@ -96,20 +91,11 @@ export default function GroupList() {
       setActiveUserId(response.data.chat_id);
       setActiveUsername(response.data.name);
       setIsChatVisible(true);
-      /* console.log(response.data); */
     }
   }
   useEffect(() => {
     getGroup();
-  }, []);
-
-  useEffect(() => {
-    console.log("Array changed:", group);
-  }, [group]);
-
-  useEffect(() => {
-    console.log("Local group", localGroup);
-  }, [localGroup]);
+  });
 
   return (
     <div className="mx-4">
@@ -277,44 +263,6 @@ export default function GroupList() {
     );
   }
 
-  function CreateNewGroup({
-    localGroup,
-    createGroup,
-    groupName,
-    setGroupName,
-  }) {
-    return (
-      <>
-        {localGroup.length > 0 ? (
-          <div>
-            <div className="flex justify-between items-center">
-              {" "}
-              <span>New Group</span>
-              <button
-                className="bg-green-400 p-2 rounded-xl cursor-pointer"
-                onClick={() => createGroup()}
-              >
-                Create group
-              </button>
-            </div>
-
-            <div className="mb-5">
-              <span className="">Group name</span>
-              <input
-                className="border mt-2"
-                type="text"
-                value={groupName}
-                onChange={(e) => setGroupName(e.target.value)}
-              />
-            </div>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </>
-    );
-  }
-
   function AddedUsersToLocalGroup({ localGroup }) {
     return (
       <>
@@ -328,4 +276,37 @@ export default function GroupList() {
       </>
     );
   }
+}
+
+function CreateNewGroup({ localGroup, createGroup, groupName, setGroupName }) {
+  return (
+    <>
+      {localGroup.length > 0 ? (
+        <div>
+          <div className="flex justify-between items-center">
+            {" "}
+            <span>New Group</span>
+            <button
+              className="bg-green-400 p-2 rounded-xl cursor-pointer"
+              onClick={() => createGroup()}
+            >
+              Create group
+            </button>
+          </div>
+
+          <div className="mb-5">
+            <span className="">Group name</span>
+            <input
+              className="border mt-2"
+              type="text"
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+            />
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+    </>
+  );
 }

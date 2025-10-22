@@ -1,7 +1,26 @@
-function SendMessageButton({ sendMessage }) {
+import { sendAMessage } from "../../api/chat";
+import { useChatContext } from "../../context/ChatContext";
+import { useUserContext } from "../../context/UserContext";
+/* import { socket } from "../../utils/socket"; */
+function SendMessageButton() {
+  const { currentChat, messageInput, setMessageInput } = useChatContext();
+  const { user } = useUserContext();
+  async function sendMessage() {
+    const response = await sendAMessage(currentChat, messageInput);
+    if (response.status === 200) {
+      const newMessage = {
+        chatId: currentChat,
+        senderId: { _id: user.id, username: user.username },
+        content: messageInput,
+        createdAt: response.data.message.createdAt,
+      };
+      /*      socket.emit("sendMessage", newMessage); */
+    }
+    setMessageInput("");
+  }
   return (
     <button
-      onClick={sendMessage}
+      onClick={() => sendMessage()}
       className="bg-[var(--color-primary)] p-2 rounded-xl cursor-pointer"
     >
       <svg

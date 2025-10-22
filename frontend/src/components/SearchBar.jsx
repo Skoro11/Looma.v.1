@@ -1,6 +1,6 @@
 function SearchBar() {
   return (
-    <div className="bg-[var(--color-body)] mx-4 flex p-2 border-0 rounded-2xl  my-4">
+    <div className="bg-[var(--color-body)] md:mx-4 flex p-2 md:p-2 border-0 rounded-2xl  md:my-4">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -19,7 +19,7 @@ function SearchBar() {
       <input
         placeholder="Search"
         type="text"
-        className=" border-white/20 text-white ml-2"
+        className=" border-white/20 text-white ml-2 w-full"
       />
     </div>
   );

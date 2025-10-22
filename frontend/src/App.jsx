@@ -1,6 +1,6 @@
 import "./App.css";
-import LoginPage from "./components/LoginForm";
-import SignupPage from "./components/SignupForm";
+import LoginPage from "./pages/LoginPage.jsx";
+import SignupPage from "./pages/SignupPage.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { LandingPage } from "./pages/LandingPage";

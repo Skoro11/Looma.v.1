@@ -11,8 +11,10 @@ This document describes the main data models for the Chat App MVP, including Use
   "id": "ObjectId",
   "username": "toni23",
   "email": "toni@example.com",
-  "passwordHash": "$2b$12$hash",
+  "password": "$2b$12$hash",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjM2NTQ4MzZiYjFlNWRiYzg2YWMxMCIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoiVG9uaSIsImlhdCI6MTc2MTEzODM4OX0.Cfz4zrEWlt4A9W8lfIO8hMYxFrSLrbV1XOFuCi0OXZI",
   "avatarUrl": "https://example.com/avatar.png",
+  "friends": ["user1"],
   "createdAt": "2025-09-29T12:00:00Z",
   "lastLogin": "2025-09-29T12:05:00Z"
 }
@@ -23,6 +25,7 @@ This document describes the main data models for the Chat App MVP, including Use
 ```json
 {
   "id": "ObjectId",
+  "name": "My Group",
   "participants": ["userId1", "userId2"],
   "lastMessageId": "messageId",
   "createdAt": "2025-09-29T12:00:00Z",

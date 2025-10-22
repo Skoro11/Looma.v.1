@@ -5,28 +5,31 @@ function AddFriendButton({ itemId }) {
   const { setOtherUsers, otherUsers, setUserFriends } = useUserContext();
 
   async function AddFriendApi(userId) {
-    const response = await addFriend(userId);
-    /* console.log("AddFriendApi response ", response); */
-    if (response.data.success === true && response.data?.user) {
-      /* console.log("Add friend response", response); */
-      const newFriend = {
-        _id: response.data.user._id,
-        username: response.data.user.username,
-      };
-      /* console.log(newFriend); */
-      setUserFriends((prev) => [...prev, newFriend]);
-      const oldUsers = otherUsers;
-      const filtered = oldUsers.filter(
-        (user) => user._id.toString() !== newFriend._id
-      );
-      setOtherUsers(filtered);
-      toast.success("User added to friends");
-    }
+    try {
+      const response = await addFriend(userId);
 
-    /* console.log("Response Add friend", response.data); */
+      if (response?.data?.success && response.data.user) {
+        const newFriend = {
+          _id: response.data.user._id,
+          username: response.data.user.username,
+        };
+
+        setUserFriends((prev) => [...prev, newFriend]);
+
+        setOtherUsers((prev) =>
+          prev.filter((user) => user._id.toString() !== newFriend._id)
+        );
+
+        toast.success("User added to friends");
+      } else {
+        toast.error(response?.data?.message || "Failed to add friend");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
   return (
-    <div
+    <button
       onClick={() => AddFriendApi(itemId)}
       className=" cursor-pointer w-7 h-7 flex items-center justify-center rounded-full bg-[var(--color-primary)]"
     >
@@ -40,7 +43,7 @@ function AddFriendButton({ itemId }) {
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
       </svg>
-    </div>
+    </button>
   );
 }
 export default AddFriendButton;

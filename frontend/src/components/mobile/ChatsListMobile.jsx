@@ -1,30 +1,32 @@
-import { useEffect } from "react";
 import { getAllUserChats, getChatBasedOnId } from "../../api/chat";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
-export function ChatsList() {
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+export function ChatsListMobile() {
   const {
+    setIsMobileChatVisible,
     allUserChats,
     setAllUserChats,
     setMessages,
+    messages,
     setCurrentChat,
     setActiveUsername,
+    setListState,
     setIsChatVisible,
   } = useChatContext();
 
   const { user } = useUserContext();
-
   let myId = user.id;
+
   async function fetchUserChats() {
     const response = await getAllUserChats();
     const chats = response.data.chat;
-
     const sideBarChats = chats.map((chat) => {
       if (chat.participants.length === 2) {
         const other = chat.participants.find((item) => item._id !== myId);
-
         const lastMessage = chat.lastMessage;
-
         return {
           chatId: chat._id,
           name: other.username,
@@ -42,27 +44,29 @@ export function ChatsList() {
 
     setAllUserChats(sideBarChats);
   }
-
+  useEffect(() => {
+    fetchUserChats();
+  }, []);
   async function openChat(chatId, username) {
     const response = await getChatBasedOnId(chatId);
-
     if (response) {
       setCurrentChat(chatId);
       setMessages(response.data.chat);
-      setIsChatVisible(true);
+      setIsMobileChatVisible(true);
+      setListState("none");
     }
-
     setActiveUsername(username);
   }
-  useEffect(() => {
-    fetchUserChats();
-  });
   return (
-    <div className="">
+    <AnimatePresence>
       {allUserChats.map((item) => (
-        <div
+        <motion.div
           key={item.chatId}
-          className="p-4 border rounded-2xl mx-4 my-4 bg-[var(--color-messages)] shadow-sm"
+          initial={{ x: 0, opacity: 1 }}
+          whileHover={{ scale: 1.02 }}
+          exit={{ opacity: 0 }}
+          className="rounded-2xl my-4 cursor-pointer"
+          onClick={() => openChat(item.chatId, item.name)}
         >
           <li className="flex gap-4 items-center">
             {/* Avatar / Icon */}
@@ -84,39 +88,15 @@ export function ChatsList() {
             </div>
 
             {/* Content */}
-            <div className="flex-1">
-              <div className="flex justify-between items-center mb-1">
-                <span>{item.name}</span>
-                <span className="flex gap-2">
-                  <button
-                    className="cursor-pointer"
-                    onClick={() => openChat(item.chatId, item.name)}
-                  >
-                    {" "}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="var(--color-logo)"
-                      className="size-7"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
-                      />
-                    </svg>
-                    {/* <div>{JSON.stringify(item)}</div> */}
-                  </button>
-                </span>
+            <div>
+              <span className="font-bold">{item.name}</span>
+              <div className="text-gray-400">
+                {item.lastMessage ? item.lastMessage.content : ""}
               </div>
             </div>
           </li>
-          <div>{item.lastMessage ? item.lastMessage.content : ""}</div>
-        </div>
+        </motion.div>
       ))}
-      {/* <div>{JSON.stringify(allUserChats)}</div> */}
-    </div>
+    </AnimatePresence>
   );
 }

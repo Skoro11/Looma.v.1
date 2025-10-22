@@ -3,16 +3,16 @@ import { RegisterUser } from "../api/user";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function SignupPage() {
-  const [userEmail, setUserEmail] = useState("toni@test.com");
-  const [username, setUsername] = useState("toni123");
-  const [password, setPassword] = useState("strongpassword");
+  const [userEmail, setUserEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   async function SubmitForm(e) {
     e.preventDefault();
     const data = await RegisterUser(username, userEmail, password);
     if (data && data.success === true) {
       toast.success(data.message);
-      navigate("/"); // SPA-friendly redirect
+      navigate("/");
     }
   }
   return (

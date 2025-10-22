@@ -1,57 +1,34 @@
-import express from "express";
-import { DbConnection } from "./config/DbConnection.js";
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import cors from "cors";
-import { Server } from "socket.io";
 import http from "http";
-import AuthRouter from "./routes/auth-route.js";
-import UserRouter from "./routes/user-route.js";
-import ChatRouter from "./routes/chat-route.js";
-import { chatSockets } from "./socket/chatSockets.js";
-dotenv.config();
-const app = express();
-const server = http.createServer(app);
+import { Server } from "socket.io";
+import app from "./src/app.js";
+import { DbConnection } from "./src/config/DbConnection.js";
+import { chatSockets } from "./src/socket/chatSockets.js";
 
-app.use(
-  cors({
-    origin: "http://localhost:5173", // frontend URL
-    credentials: true,
-  })
-);
+dotenv.config();
+
+const PORT = process.env.PORT || 3000;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: FRONTEND_URL,
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
+// Attach socket logic
 chatSockets(io);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-// Used for registering user and login
-app.use("/auth", AuthRouter);
-
-// Used for fetching users from DB
-app.use("/user", UserRouter);
-
-// Used for manipulating user chats and sending messages
-app.use("/chats", ChatRouter);
-
-app.get("/", (req, res) => {
-  res.status(200).send("This is the backend");
-});
-
-server.listen(3000, () => {
-  async function StartServer() {
-    const connection = await DbConnection(process.env.MONGODB_URI);
-    if (connection === true) {
-      console.log("App is listening on port 3000");
-    }
-  }
-  StartServer();
-});
+// Connect DB and start server
+DbConnection(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("✅ MongoDB connected");
+    server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error("❌ Database connection failed:", err);
+    process.exit(1);
+  });

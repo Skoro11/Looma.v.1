@@ -56,8 +56,7 @@ export async function addFriend(userId) {
     });
     return response;
   } catch (error) {
-    handleApiError(error);
-    throw error;
+    throw new Error(handleApiError(error, "Could not add friend."));
   }
 }
 

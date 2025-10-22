@@ -7,10 +7,11 @@ export function chatSockets(io) {
       console.log("Socket " + socket.id + " joined room " + chatId);
     });
 
-    socket.on("sendMessage", (msg) => {
-      io.to(msg.chatId).emit("newMessage", msg);
-      console.log("Message sent ", msg);
+    socket.on("sendMessage", (message) => {
+      io.to(message.chatId).emit("newMessage", message);
+      console.log("Message sent ", message);
     });
+
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
     });

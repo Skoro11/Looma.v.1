@@ -1,41 +1,33 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { CheckToken } from "../api/authApi";
 
 import { toast } from "react-toastify";
-import { io } from "socket.io-client";
+
 import { UserList } from "../components/Users/UserList";
 import { FriendList } from "../components/Users/FriendList";
-import { getHoursAndMinutes } from "../helpers/TimeConverter";
+import { getHoursAndMinutes } from "../utils/TimeConverter";
 import GroupList from "../components/Users/GroupList";
-import HomeButton from "../components/buttons/sidebar/HomeButton";
 import ChatsButton from "../components/buttons/sidebar/ChatsButton";
 import ContactsButton from "../components/buttons/sidebar/ContactsButton";
 import GroupButton from "../components/buttons/sidebar/GroupButton";
-import SettingsButton from "../components/buttons/sidebar/SettingsButton";
 import AccountButton from "../components/buttons/sidebar/AccountButton";
 import SearchBar from "../components/SearchBar";
 import SendMessageButton from "../components/buttons/SendMessageButton";
 import UserIcon from "../components/icons/UserIcon";
 import DeleteChatButton from "../components/buttons/DeleteChatButton";
-import RemoveFriendButton from "../components/buttons/RemoveFriendButton";
 import FriendsButton from "../components/buttons/sidebar/FriendsButton";
 import { useChatContext } from "../context/ChatContext";
 import { useUserContext } from "../context/UserContext";
 import { fetchUserFriends, getNonFriends } from "../api/user";
-import { CreateOrOpenChat, RemoveChat, sendAMessage } from "../api/chat";
+import { RemoveChat, sendAMessage } from "../api/chat";
 import AccountList from "../components/Users/AccountList";
 import { ChatsList } from "../components/Users/ChatsList";
-const socket = io("http://localhost:3000");
+import { MobileLandingPage } from "./MobileLandingPage";
+/* import { socket } from "../utils/socket"; */
 
 export function LandingPage() {
-  const {
-    user,
-    setUser,
-    otherUsers,
-    setOtherUsers,
-    userFriends,
-    setUserFriends,
-  } = useUserContext();
+  const { user, setUser, setOtherUsers, userFriends, setUserFriends } =
+    useUserContext();
   const {
     messages,
     setMessages,
@@ -43,10 +35,7 @@ export function LandingPage() {
     setCurrentChat,
     messageInput,
     setMessageInput,
-    activeUserId,
-    setActiveUserId,
     activeUsername,
-    setActiveUsername,
     group,
     setGroup,
     listState,
@@ -57,14 +46,12 @@ export function LandingPage() {
     setAllUserChats,
   } = useChatContext();
   const messagesEndRef = useRef(null);
-  useEffect(() => {
-    /*  console.log("userFriends changed:", userFriends); */
-  }, [userFriends]);
+  useEffect(() => {}, [userFriends]);
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     socket.emit("connection", () => {
       console.log("Connected to server with id:", socket.id);
     });
@@ -74,29 +61,12 @@ export function LandingPage() {
   }, [currentChat]);
 
   useEffect(() => {
-    socket.on("newMessage", (msg) => {
-      setMessages((prev) => [...prev, msg]);
+    socket.on("newMessage", (message) => {
+      setMessages((prev) => [...prev, message]);
     });
 
     return () => socket.off("newMessage");
-  }, []);
-
-  async function StartChat(friend_id) {
-    const response = await CreateOrOpenChat(friend_id);
-    /*  console.log("Friend ID", friend_id); */
-    if (response.data.success === true) {
-      toast.success("Chat successfully created");
-      setIsChatVisible(true);
-    }
-    setActiveUserId(friend_id);
-    console.log("Start chat response data", response.data);
-    const chatId = response.data.chat;
-    setCurrentChat(chatId);
-    socket.emit("joinChat", chatId);
-    const messages = response.data.messages;
-    console.log("Response Messages", messages);
-    setMessages(messages);
-  }
+  }); */
 
   async function DeleteChat(chat_id) {
     const response = await RemoveChat(chat_id);
@@ -106,7 +76,6 @@ export function LandingPage() {
       let filtered = group.filter((u) => u._id !== chat_id);
       setGroup(filtered);
       const allChats = allUserChats.filter((item) => item.chatId !== chat_id);
-      console.log("AllChats", allChats);
       setAllUserChats(allChats);
       setCurrentChat();
 
@@ -117,7 +86,6 @@ export function LandingPage() {
   }
   async function sendMessage() {
     const response = await sendAMessage(currentChat, messageInput);
-    console.log("Send message response", response.data.message);
     if (response.status === 200) {
       const newMessage = {
         chatId: currentChat,
@@ -125,7 +93,7 @@ export function LandingPage() {
         content: messageInput,
         createdAt: response.data.message.createdAt,
       };
-      socket.emit("sendMessage", newMessage);
+      /*  socket.emit("sendMessage", newMessage); */
     }
     setMessageInput("");
   }
@@ -134,11 +102,9 @@ export function LandingPage() {
 
     const user = response.data.user;
     setUser({ id: user.id, email: user.email, username: user.username });
-    /* console.log("User Token ", user); */
   }
   async function getUsers() {
     const response = await getNonFriends();
-    console.log("Response of getUsers ", response.data.user);
     const users = response.data.user;
     setOtherUsers(users);
   }
@@ -147,7 +113,6 @@ export function LandingPage() {
     const response = await fetchUserFriends();
     if (response.data.success === true) {
       const userFriends = response.data.friends;
-      /* console.log("User Friends", response); */
       setUserFriends(userFriends);
     }
   }
@@ -155,15 +120,17 @@ export function LandingPage() {
     TokenResponse();
     getUsers();
     getUserFriends();
-  }, []);
+  });
 
   return (
-    <div className="max-w-[1400px] mx-auto pt-10">
-      <div className="bg-[var(--color-body)] shadow-xl rounded-2xl p-3 text-white ">
-        {/* <h1 className="flex items-center justify-between mb-6 w-full"></h1> */}
-        <div> {<h1>Current Chat {currentChat}</h1>}</div>
-        <div className="flex">
-          <nav className=" bg-[var(--color-primary)] w-1/15 flex flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
+    <div className="max-w-[1400px] mx-auto md:pt-10">
+      <div className="md:bg-[var(--color-body)] shadow-xl md:rounded-2xl md:p-3 text-white ">
+        <div className=" md:hidden">
+          <MobileLandingPage />
+        </div>
+
+        <div className="hidden md:flex">
+          <nav className=" w-1/7 bg-[var(--color-primary)] lg:w-1/15 md:flex flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
             <div className="flex flex-col gap-3 items-center">
               {/* <HomeButton listState={setListState} listStateValue={""} /> */}
 
@@ -189,7 +156,7 @@ export function LandingPage() {
             </div>
           </nav>
 
-          <div className=" rounded-r-xl w-1/5 bg-[var(--color-accent)] ">
+          <div className="block rounded-r-xl w-full md:w-1/2 lg:w-1/4 bg-[var(--color-accent)] ">
             <SearchBar />
             <ul className="">
               {(() => {
@@ -205,13 +172,13 @@ export function LandingPage() {
                   case "userAccount":
                     return <AccountList />;
                   default:
-                    return <p>Nothing selected</p>;
+                    return;
                 }
               })()}
             </ul>
           </div>
 
-          <div className=" w-full relative ">
+          <div className="  w-full relative  ">
             {isChatVisible ? (
               <div>
                 <div className="mx-2 bg-[var(--color-messages)] rounded-xl  mb-2 py-2 pl-3 flex items-center justify-between">
@@ -230,7 +197,8 @@ export function LandingPage() {
                     </span>
                   </div>
                 </div>
-
+                {/* <div>Json {JSON.stringify(messages)}</div>
+                <div>{JSON.stringify(user)}</div> */}
                 <ul className="h-100 overflow-y-auto   ">
                   {messages.map((message) => (
                     <li key={message._id}>
@@ -239,9 +207,7 @@ export function LandingPage() {
                       message.senderId === user.id ? (
                         <div className="text-right ">
                           <h1 className="">
-                            <span className="font-bold ">
-                              {/* {message.senderId.username}{" "} */}
-                            </span>
+                            <span className="font-bold "></span>
                           </h1>
                           <div className="flex justify-end my-2">
                             <p className="bg-[var(--color-primary)] w-max py-1 px-3 mr-2 rounded-lg text-white">
@@ -280,7 +246,7 @@ export function LandingPage() {
                     className="flex-1 py-2 px-3 mr-2 text-white outline-none bg-[var(--color-messages)] rounded-xl"
                     placeholder="Message..."
                   />
-                  <SendMessageButton sendMessage={sendMessage} />
+                  <SendMessageButton />
                 </div>
               </div>
             ) : (
@@ -291,6 +257,7 @@ export function LandingPage() {
               </div>
             )}
           </div>
+          <div></div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useChatContext } from "../../context/ChatContext";
 import { CreateOrOpenChat } from "../../api/chat";
 import { toast } from "react-toastify";
+/* import { socket } from "../../utils/socket"; */
 export function StartChatButton({ itemId, itemUsername }) {
   const {
     setIsChatVisible,
@@ -11,19 +12,16 @@ export function StartChatButton({ itemId, itemUsername }) {
   } = useChatContext();
   async function StartChat(friend_id) {
     const response = await CreateOrOpenChat(friend_id);
-    /*  console.log("Friend ID", friend_id); */
     if (response.data.success === true) {
       toast.success("Chat successfully created");
       setIsChatVisible(true);
     }
     setActiveUserId(friend_id);
     setActiveUsername(itemUsername);
-    console.log("Start chat response data", response.data);
     const chatId = response.data.chat;
     setCurrentChat(chatId);
-    /*       socket.emit("joinChat", chatId);
-     */ const messages = response.data.messages;
-    console.log("Response Messages", messages);
+    /*   socket.emit("joinChat", chatId); */
+    const messages = response.data.messages;
     setMessages(messages);
   }
   return (
