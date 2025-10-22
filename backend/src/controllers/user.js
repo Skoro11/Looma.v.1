@@ -71,7 +71,7 @@ export async function LoginUser(req, res) {
       res.cookie("looma_token", accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "Strict",
+        sameSite: "none",
         maxAge: 1500 * 60 * 1000,
       });
 
