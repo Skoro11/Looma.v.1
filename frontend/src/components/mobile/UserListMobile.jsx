@@ -1,7 +1,34 @@
-import AddFriendButton from "../buttons/AddFriendButton";
 import { useUserContext } from "../../context/UserContext";
+import { addFriend } from "../../services/userService";
+import { toast } from "react-toastify";
+import { AddButton } from "../buttons/AddButton";
+import UserIcon from "../icons/UserIcon";
 export function UserListMobile() {
-  const { otherUsers, setUserFriends } = useUserContext();
+  const { otherUsers, setUserFriends, setOtherUsers } = useUserContext();
+  async function AddFriendApi(userId) {
+    try {
+      const response = await addFriend(userId);
+
+      if (response?.data?.success && response.data.user) {
+        const newFriend = {
+          _id: response.data.user._id,
+          username: response.data.user.username,
+        };
+
+        setUserFriends((prev) => [...prev, newFriend]);
+
+        setOtherUsers((prev) =>
+          prev.filter((user) => user._id.toString() !== newFriend._id)
+        );
+
+        toast.success("User added to friends");
+      } else {
+        toast.error(response?.data?.message || "Failed to add friend");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
   return (
     <ul>
       <h1 className="mx-2">Add friends</h1>
@@ -9,33 +36,17 @@ export function UserListMobile() {
         <div key={item._id} className=" rounded-2xl my-4 ">
           <li className="flex gap-4 items-center">
             {/* Avatar / Icon */}
-            <div className="flex-shrink-0">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-12 h-12 text-gray-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-              </svg>
-            </div>
-
+            <UserIcon />
             {/* Content */}
             <div className="flex-1">
               <div className="flex justify-between items-center mb-1 mr-2">
                 <span className="font-semibold text-whit ">
                   {item.username}
                 </span>
-                <AddFriendButton
-                  itemId={item._id}
-                  setFriends={setUserFriends}
-                />{" "}
+                <AddButton
+                  onClick={() => AddFriendApi(item._id)}
+                  color={"primary"}
+                />
               </div>
             </div>
           </li>

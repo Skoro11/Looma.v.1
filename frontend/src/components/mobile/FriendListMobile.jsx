@@ -1,8 +1,9 @@
-import RemoveFriendButton from "../buttons/RemoveFriendButton";
 import { useUserContext } from "../../context/UserContext";
 import { useChatContext } from "../../context/ChatContext";
 import { CreateOrOpenChat } from "../../services/chatService";
 import { toast } from "react-toastify";
+import { RemoveButton } from "../buttons/RemoveButton";
+import { removeFriend } from "../../services/userService";
 export function FriendListMobile({ setIsMobileChatVisible }) {
   const {
     setIsChatVisible,
@@ -12,7 +13,6 @@ export function FriendListMobile({ setIsMobileChatVisible }) {
     setActiveUsername,
     setListState,
   } = useChatContext();
-  const { userFriends } = useUserContext();
   async function StartChat(friend_id, itemUsername) {
     try {
       const response = await CreateOrOpenChat(friend_id);
@@ -26,6 +26,28 @@ export function FriendListMobile({ setIsMobileChatVisible }) {
       /*       socket.emit("joinChat", chatId);
        */ const messages = response.data.messages;
       setMessages(messages);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+  const { setOtherUsers, setUserFriends, userFriends } = useUserContext();
+
+  async function RemoveFriendAxios(userId) {
+    try {
+      const response = await removeFriend(userId);
+      if (response.data.success === true) {
+        const removedFriend = response.data.user;
+
+        toast.success("User removed from friends");
+
+        setOtherUsers((prev) => [...prev, removedFriend]);
+
+        const updatedFriends = userFriends.filter(
+          (friend) => friend._id != userId
+        );
+
+        setUserFriends(updatedFriends);
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -68,7 +90,8 @@ export function FriendListMobile({ setIsMobileChatVisible }) {
                   </button>
                 </span>
                 <span className="flex gap-2">
-                  <RemoveFriendButton itemId={item._id} />
+                  {/* <RemoveFriendButton itemId={item._id} /> */}
+                  <RemoveButton onClick={() => RemoveFriendAxios(item._id)} />
                 </span>
               </div>
             </div>

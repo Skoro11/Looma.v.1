@@ -1,8 +1,58 @@
-import RemoveFriendButton from "../buttons/RemoveFriendButton";
 import { useUserContext } from "../../context/UserContext";
-import StartChatButton from "../buttons/StartChatButton";
+import { ChatButton } from "../buttons/ChatButton";
+import { useChatContext } from "../../context/ChatContext";
+import { CreateOrOpenChat } from "../../services/chatService";
+import { toast } from "react-toastify";
+import { RemoveButton } from "../buttons/RemoveButton";
+import { removeFriend } from "../../services/userService";
 export function FriendList() {
-  const { userFriends } = useUserContext();
+  const {
+    setIsChatVisible,
+    setMessages,
+    setCurrentChat,
+    setActiveUserId,
+    setActiveUsername,
+  } = useChatContext();
+  async function StartChat(friend_id, itemUsername) {
+    try {
+      const response = await CreateOrOpenChat(friend_id);
+      if (response.data.success === true) {
+        toast.success("Chat successfully created");
+        setIsChatVisible(true);
+      }
+      setActiveUserId(friend_id);
+      setActiveUsername(itemUsername);
+      const chatId = response.data.chat;
+      setCurrentChat(chatId);
+      /*   socket.emit("joinChat", chatId); */
+      const messages = response.data.messages;
+      setMessages(messages);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+  const { setOtherUsers, setUserFriends, userFriends } = useUserContext();
+
+  async function RemoveFriendAxios(userId) {
+    try {
+      const response = await removeFriend(userId);
+      if (response.data.success === true) {
+        const removedFriend = response.data.user;
+
+        toast.success("User removed from friends");
+
+        setOtherUsers((prev) => [...prev, removedFriend]);
+
+        const updatedFriends = userFriends.filter(
+          (friend) => friend._id != userId
+        );
+
+        setUserFriends(updatedFriends);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
   return (
     <ul>
       <h1 className="mx-4">My Friends</h1>
@@ -35,11 +85,15 @@ export function FriendList() {
               <div className="flex justify-between items-center mb-1">
                 <span>{item.username}</span>
                 <span className="flex gap-2">
-                  <StartChatButton
+                  {/* <StartChatButton
                     itemId={item._id}
                     itemUsername={item.username}
+                  /> */}
+                  <ChatButton
+                    onClick={() => StartChat(item._id, item.username)}
                   />
-                  <RemoveFriendButton itemId={item._id} />
+                  {/* <RemoveFriendButton itemId={item._id} /> */}
+                  <RemoveButton onClick={() => RemoveFriendAxios(item._id)} />
                 </span>
               </div>
             </div>

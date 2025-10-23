@@ -1,4 +1,3 @@
-import "./App.css";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -22,7 +21,7 @@ function App() {
               <Route path="/dashboard" element={<LandingPage />} />
             </Routes>
           </Router>
-          <ToastContainer position="bottom-right" autoClose={3000} />
+          <ToastContainer position="bottom-right" autoClose={1000} />
         </div>
       </ChatProvider>
     </UserProvider>

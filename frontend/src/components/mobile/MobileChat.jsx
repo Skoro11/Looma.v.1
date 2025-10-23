@@ -5,11 +5,12 @@ import { useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import { RemoveChat } from "../../services/chatService";
 import { ArrowLeft, UserIcon, EllipsisVertical } from "lucide-react";
-import SendMessageButton from "../buttons/SendMessageButton";
+import { ArrowUpButton } from "../buttons/ArrowUpButton";
+import { socket } from "../../utils/socket";
+import { sendAMessage } from "../../services/chatService";
 export function MobileChat() {
   const { user } = useUserContext();
   const {
-    isMobileChatVisible,
     setIsMobileChatVisible,
     messages,
     setMessages,
@@ -20,7 +21,6 @@ export function MobileChat() {
     activeUsername,
     group,
     setGroup,
-    listState,
     setListState,
     setIsChatVisible,
     allUserChats,
@@ -51,6 +51,23 @@ export function MobileChat() {
       }
     } catch (error) {
       toast.error(error.message);
+    }
+  }
+  async function sendMessage() {
+    try {
+      const response = await sendAMessage(currentChat, messageInput);
+      if (response.status === 200) {
+        const newMessage = {
+          chatId: currentChat,
+          senderId: { _id: user.id, username: user.username },
+          content: messageInput,
+          createdAt: response.data.message.createdAt,
+        };
+        socket.emit("sendMessage", newMessage);
+      }
+      setMessageInput("");
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   }
   return (
@@ -139,7 +156,7 @@ export function MobileChat() {
           className="flex-1 py-2 px-3 mr-2 text-white outline-none bg-[var(--color-messages)] rounded-xl"
           placeholder="Message..."
         />
-        <SendMessageButton />
+        <ArrowUpButton onClick={() => sendMessage()} />
       </div>
     </div>
   );

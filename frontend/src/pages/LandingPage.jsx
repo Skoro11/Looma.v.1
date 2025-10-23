@@ -7,15 +7,16 @@ import { UserList } from "../components/Users/UserList";
 import { FriendList } from "../components/Users/FriendList";
 import { getHoursAndMinutes } from "../utils/TimeConverter";
 import GroupList from "../components/Users/GroupList";
-import ChatsButton from "../components/buttons/sidebar/ChatsButton";
-import ContactsButton from "../components/buttons/sidebar/ContactsButton";
-import GroupButton from "../components/buttons/sidebar/GroupButton";
-import AccountButton from "../components/buttons/sidebar/AccountButton";
+import {
+  ChatsButton,
+  GroupButton,
+  FriendsButton,
+  ContactsButton,
+  AccountButton,
+} from "../components/buttons/sidebar/SidebarButtons.jsx";
 import SearchBar from "../components/SearchBar";
-import SendMessageButton from "../components/buttons/SendMessageButton";
 import UserIcon from "../components/icons/UserIcon";
-import DeleteChatButton from "../components/buttons/DeleteChatButton";
-import FriendsButton from "../components/buttons/sidebar/FriendsButton";
+import { TrashButton } from "../components/buttons/TrashButton.jsx";
 import { useChatContext } from "../context/ChatContext";
 import { useUserContext } from "../context/UserContext";
 import { fetchUserFriends, getNonFriends } from "../services/userService";
@@ -24,10 +25,9 @@ import AccountList from "../components/Users/AccountList";
 import { ChatsList } from "../components/Users/ChatsList";
 import { MobileLandingPage } from "./MobileLandingPage";
 import { socket } from "../utils/socket";
-
+import { ArrowUpButton } from "../components/buttons/ArrowUpButton.jsx";
 export function LandingPage() {
-  const { user, setUser, setOtherUsers, userFriends, setUserFriends } =
-    useUserContext();
+  const { user, setUser, setOtherUsers, setUserFriends } = useUserContext();
   const {
     messages,
     setMessages,
@@ -84,22 +84,8 @@ export function LandingPage() {
       setIsChatVisible(false);
     }
   }
-  async function sendMessage() {
-    const response = await sendAMessage(currentChat, messageInput);
-    if (response.status === 200) {
-      const newMessage = {
-        chatId: currentChat,
-        senderId: { _id: user.id, username: user.username },
-        content: messageInput,
-        createdAt: response.data.message.createdAt,
-      };
-      socket.emit("sendMessage", newMessage);
-    }
-    setMessageInput("");
-  }
   async function TokenResponse() {
     const response = await CheckToken();
-
     const user = response.data.user;
     setUser({ id: user.id, email: user.email, username: user.username });
   }
@@ -114,6 +100,23 @@ export function LandingPage() {
     if (response.data.success === true) {
       const userFriends = response.data.friends;
       setUserFriends(userFriends);
+    }
+  }
+  async function sendMessage() {
+    try {
+      const response = await sendAMessage(currentChat, messageInput);
+      if (response.status === 200) {
+        const newMessage = {
+          chatId: currentChat,
+          senderId: { _id: user.id, username: user.username },
+          content: messageInput,
+          createdAt: response.data.message.createdAt,
+        };
+        socket.emit("sendMessage", newMessage);
+      }
+      setMessageInput("");
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   }
   useEffect(() => {
@@ -191,9 +194,10 @@ export function LandingPage() {
 
                   <div className="mr-4">
                     <span>
-                      <DeleteChatButton
+                      {/* <DeleteChatButton
                         deleteChat={() => DeleteChat(currentChat)}
-                      />
+                      /> */}
+                      <TrashButton onClick={() => DeleteChat(currentChat)} />
                     </span>
                   </div>
                 </div>
@@ -246,7 +250,7 @@ export function LandingPage() {
                     className="flex-1 py-2 px-3 mr-2 text-white outline-none bg-[var(--color-messages)] rounded-xl"
                     placeholder="Message..."
                   />
-                  <SendMessageButton />
+                  <ArrowUpButton onClick={() => sendMessage()} />
                 </div>
               </div>
             ) : (

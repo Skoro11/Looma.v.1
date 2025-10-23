@@ -1,63 +1,32 @@
 import { useChatContext } from "../context/ChatContext";
-import { useRef, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useRef, useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
-import { getHoursAndMinutes } from "../utils/TimeConverter";
-import { sendAMessage, RemoveChat } from "../services/chatService";
 import { UserListMobile } from "../components/mobile/UserListMobile";
 import SearchBar from "../components/SearchBar";
-import UserIcon from "../components/icons/UserIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import AccountList from "../components/Users/AccountList";
 import Sidebar from "../components/buttons/sidebar/Sidebar";
-import SendMessageButton from "../components/buttons/SendMessageButton";
+import { ArrowUpButton } from "../components/buttons/ArrowUpButton";
 import { ChatsListMobile } from "../components/mobile/ChatsListMobile";
 import { EllipsisVertical, ArrowLeft } from "lucide-react";
 import { FriendListMobile } from "../components/mobile/FriendListMobile";
 import { GroupListMobile } from "../components/mobile/GroupListMobile";
 import { MobileChat } from "../components/mobile/MobileChat";
 export function MobileLandingPage() {
-  const [chatSettingsVisible, setChatSettingsVisible] = useState(false);
-  const { user, otherUsers, userFriends } = useUserContext();
+  const { otherUsers, userFriends } = useUserContext();
   const {
     isMobileChatVisible,
     setIsMobileChatVisible,
     messages,
-    setMessages,
-    currentChat,
-    setCurrentChat,
-    messageInput,
-    setMessageInput,
-    activeUsername,
-    group,
-    setGroup,
     listState,
     setListState,
-    setIsChatVisible,
-    allUserChats,
-    setAllUserChats,
   } = useChatContext();
 
   const messagesEndRef = useRef(null);
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-  async function DeleteChat(chat_id) {
-    const response = await RemoveChat(chat_id);
-    if (response.data.success === true) {
-      toast.success("Chat deleted successfully");
 
-      let filtered = group.filter((u) => u._id !== chat_id);
-      setGroup(filtered);
-      const allChats = allUserChats.filter((item) => item.chatId !== chat_id);
-      setAllUserChats(allChats);
-      setCurrentChat();
-
-      setMessages([]);
-      setCurrentChat();
-      setIsMobileChatVisible(false);
-    }
-  }
   return (
     <section className=" ">
       <div></div>

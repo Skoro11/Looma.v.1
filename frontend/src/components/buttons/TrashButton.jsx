@@ -1,6 +1,6 @@
-function DeleteChatButton({ deleteChat }) {
+export function TrashButton({ onClick }) {
   return (
-    <button onClick={deleteChat} className="cursor-pointer">
+    <button onClick={onClick} className="cursor-pointer">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -18,5 +18,3 @@ function DeleteChatButton({ deleteChat }) {
     </button>
   );
 }
-
-export default DeleteChatButton;
