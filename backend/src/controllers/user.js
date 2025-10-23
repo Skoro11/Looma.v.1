@@ -213,6 +213,7 @@ export async function GetFriends(req, res) {
 export async function DeleteAllUsers(req, res) {
   try {
     await User.deleteMany({});
+    res.status(200).json({ message: "Deleted all users" });
   } catch (error) {
     console.log("Error with DeleteAllUsers", error.message);
     res.status(500).json({ error: error.message });

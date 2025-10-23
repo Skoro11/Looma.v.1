@@ -2,7 +2,7 @@ import { sendAMessage } from "../../api/chat";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
 import { toast } from "react-toastify";
-/* import { socket } from "../../utils/socket"; */
+import { socket } from "../../utils/socket";
 function SendMessageButton() {
   const { currentChat, messageInput, setMessageInput } = useChatContext();
   const { user } = useUserContext();
@@ -16,7 +16,7 @@ function SendMessageButton() {
           content: messageInput,
           createdAt: response.data.message.createdAt,
         };
-        /*      socket.emit("sendMessage", newMessage); */
+        socket.emit("sendMessage", newMessage);
       }
       setMessageInput("");
     } catch (error) {

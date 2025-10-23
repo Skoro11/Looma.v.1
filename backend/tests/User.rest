@@ -1,13 +1,13 @@
 @BASE_URL=http://localhost:3000
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjM2NTQ4MzZiYjFlNWRiYzg2YWMxMCIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoiVG9uaSIsImlhdCI6MTc2MDc4MTk1MH0.mrvbiX5JpmseuQ_qF-NTSz7G682vaM30jgPD1Rt2YYg
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Zjk0YjI0OTY0NWNhNWNmYmU3OTliMiIsImVtYWlsIjoic2tvcm8udG9uaTAxQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiVG9uaSIsImlhdCI6MTc2MTIwNDkwNn0.TJB6NHl2hQ6hwKfxSocm8JNsXJNIqQCgXH8T0a-heB8
 ### Register User
 
 POST {{BASE_URL}}/auth/register
 Content-Type: application/json
 
 {
-  "username": "toni",
-  "email": "toni@exa.mcom",
+  "username": "Toni",
+  "email": "toni@example.com",
   "password": "strongpassword"
 }
 
@@ -17,7 +17,7 @@ POST {{BASE_URL}}/auth/login
 Content-Type: application/json
 
 {
- "email": "toni@exa.mcom",
+ "email": "toni@example.com",
   "password": "strongpassword"
 }
 
@@ -52,4 +52,4 @@ Authorization: Bearer {{TOKEN}}
 
 ###
 
-DELETE {{BASE_URL}}/user/delete/all
+DELETE {{BASE_URL}}/user

@@ -65,7 +65,7 @@ export function ChatsList() {
   }
   useEffect(() => {
     fetchUserChats();
-  });
+  }, []);
   return (
     <div className="">
       {allUserChats.map((item) => (

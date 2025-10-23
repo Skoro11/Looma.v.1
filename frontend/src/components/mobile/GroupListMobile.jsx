@@ -66,7 +66,7 @@ export function GroupListMobile() {
 
   useEffect(() => {
     getGroup();
-  });
+  }, []);
 
   return (
     <div className="mx-2">

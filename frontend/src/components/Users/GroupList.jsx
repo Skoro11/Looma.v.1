@@ -111,7 +111,7 @@ export default function GroupList() {
   }
   useEffect(() => {
     getGroup();
-  });
+  }, []);
 
   return (
     <div className="mx-4">

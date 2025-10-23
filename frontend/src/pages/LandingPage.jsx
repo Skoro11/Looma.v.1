@@ -23,7 +23,7 @@ import { RemoveChat, sendAMessage } from "../api/chat";
 import AccountList from "../components/Users/AccountList";
 import { ChatsList } from "../components/Users/ChatsList";
 import { MobileLandingPage } from "./MobileLandingPage";
-/* import { socket } from "../utils/socket"; */
+import { socket } from "../utils/socket";
 
 export function LandingPage() {
   const { user, setUser, setOtherUsers, userFriends, setUserFriends } =
@@ -46,12 +46,12 @@ export function LandingPage() {
     setAllUserChats,
   } = useChatContext();
   const messagesEndRef = useRef(null);
-  useEffect(() => {}, [userFriends]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     socket.emit("connection", () => {
       console.log("Connected to server with id:", socket.id);
     });
@@ -66,7 +66,7 @@ export function LandingPage() {
     });
 
     return () => socket.off("newMessage");
-  }); */
+  });
 
   async function DeleteChat(chat_id) {
     const response = await RemoveChat(chat_id);
@@ -93,7 +93,7 @@ export function LandingPage() {
         content: messageInput,
         createdAt: response.data.message.createdAt,
       };
-      /*  socket.emit("sendMessage", newMessage); */
+      socket.emit("sendMessage", newMessage);
     }
     setMessageInput("");
   }
@@ -120,7 +120,7 @@ export function LandingPage() {
     TokenResponse();
     getUsers();
     getUserFriends();
-  });
+  }, []);
 
   return (
     <div className="max-w-[1400px] mx-auto md:pt-10">

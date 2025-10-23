@@ -173,7 +173,7 @@ export function MobileLandingPage() {
 
         <div></div>
       </div>
-      <div className=" chat w-full bg-[var(--color-body)] relative ">
+      <div className=" chat w-full  bg-[var(--color-body)] relative ">
         {isMobileChatVisible && <MobileChat />}
       </div>
     </section>

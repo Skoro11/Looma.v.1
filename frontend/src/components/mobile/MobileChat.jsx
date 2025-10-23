@@ -54,7 +54,7 @@ export function MobileChat() {
     }
   }
   return (
-    <div>
+    <div className="min-h-150">
       {/* Chat Header */}
       <div className="z-50 fixed w-full bg-[var(--color-messages)] mb-2 py-5 pl-3 flex items-center justify-between">
         <div className="flex items-center">
