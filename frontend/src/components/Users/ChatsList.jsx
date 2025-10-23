@@ -77,7 +77,7 @@ export function ChatsList() {
     fetchUserChats();
   }, []);
   return (
-    <div className="overflow-y-scroll h-full scrollbar-hide max-h-100">
+    <div className="overflow-y-scroll h-full scrollbar-hide md:max-h-115">
       <AnimatePresence>
         {allUserChats.map((item) => (
           <motion.div
@@ -93,14 +93,16 @@ export function ChatsList() {
               className="my-4 md:rounded-2xl cursor-pointer pb-2  md:p-4 md:border  md:mx-4  md:bg-[var(--color-messages)] md:shadow-sm"
             >
               <li className="flex gap-4 items-center">
-                <UserIcon />
+                <span className="min-w-1/7">
+                  <UserIcon />
+                </span>
 
-                <div className="flex-1">
+                <div className="flex-1 max-w-5/7 ">
                   <div
                     onClick={() => {
                       openChat(item.chatId, item.name);
                     }}
-                    className="flex justify-between items-center mb-1 cursor-pointer"
+                    className="flex justify-between items-center mb-1 cursor-pointer "
                   >
                     <span className="font-bold">{item.name}</span>
                     <span className="md:flex gap-2 hidden">
@@ -109,7 +111,7 @@ export function ChatsList() {
                       />
                     </span>
                   </div>
-                  <div className="text-gray-400">
+                  <div className="text-gray-400 max-w-5/6 truncate ">
                     {item.lastMessage ? item.lastMessage.content : ""}
                   </div>
                 </div>

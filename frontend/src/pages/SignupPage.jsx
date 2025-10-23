@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RegisterUser } from "../services/userService";
+import { RegisterUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function SignupPage() {
@@ -20,50 +20,63 @@ function SignupPage() {
     }
   }
   return (
-    <div className="flex items-center justify-center min-h-screen w-full bg-center bg-cover">
-      <div className="bg-white shadow-xl rounded-2xl p-10 w-full max-w-md">
-        <h1 className="flex items-center justify-center text-gray-800 text-4xl font-bold mb-6 gap-4">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-body)] px-4">
+      <div className="bg-[var(--color-accent)] shadow-2xl rounded-2xl p-8 sm:p-10 w-full max-w-md text-white">
+        {/* Logo + Title */}
+        <h1 className="flex items-center justify-center text-3xl sm:text-4xl font-bold mb-6 gap-3">
           <img
             src="looma.png"
             alt="Looma Logo"
-            className="w-16 h-16 object-contain"
+            className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
           />
-          <span>Welcome to Looma</span>
+          <span className="text-[var(--color-logo)]">Looma</span>
         </h1>
 
-        <p className="text-center text-gray-500 mb-8">Register new Account</p>
+        <p className="text-center text-gray-300 mb-8 text-sm sm:text-base">
+          Register new Account
+        </p>
+
+        {/* Registration Form */}
         <form onSubmit={SubmitForm} className="space-y-4">
           <input
-            onChange={(e) => setUserEmail(e.target.value)}
             value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
             required
             type="email"
             placeholder="Email"
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 rounded-lg bg-[var(--color-messages)] border border-transparent focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none placeholder-gray-400 text-white"
           />
           <input
-            onChange={(e) => setUsername(e.target.value)}
             value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
             placeholder="Username"
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 rounded-lg bg-[var(--color-messages)] border border-transparent focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none placeholder-gray-400 text-white"
           />
           <input
-            onChange={(e) => setPassword(e.target.value)}
             value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
             type="password"
             placeholder="Password"
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 rounded-lg bg-[var(--color-messages)] border border-transparent focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none placeholder-gray-400 text-white"
           />
-          <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-colors cursor-pointer">
+
+          <button
+            type="submit"
+            className="w-full mt-4 bg-[var(--color-primary)] hover:bg-[var(--color-logo)] text-white font-semibold py-3 rounded-lg transition-colors"
+          >
             Register
           </button>
         </form>
 
-        <p className="text-center text-gray-500 mt-6">
+        {/* Footer */}
+        <p className="text-center text-gray-400 mt-6 text-sm">
           Already have an account?{" "}
-          <a href="/" className="text-blue-600 font-semibold cursor-pointer">
+          <a
+            href="/"
+            className="text-[var(--color-primary)] hover:text-[var(--color-logo)] font-semibold transition-colors"
+          >
             Sign in
           </a>
         </p>

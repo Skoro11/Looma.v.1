@@ -1,6 +1,5 @@
 
-@BASE_URL=loomav1-production.up.railway.app
-
+@BASE_URL=http://localhost:3000
 ### Register User
 
 POST {{BASE_URL}}/auth/register
@@ -25,4 +24,8 @@ Content-Type: application/json
 ### Check the token and allow access
 
 GET {{BASE_URL}}/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjFlYTBkMzU2ODhlNjFkNDU3OWY5YyIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidG9uaTEyMyIsImlhdCI6MTc2MDc3NjQyMn0.O7fdxfXt8YinIcxEFhAiLWBGhaRdbUR7nyucWx6ShiY
+
+### Removes token from the cookie
+POST {{BASE_URL}}/auth/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjFlYTBkMzU2ODhlNjFkNDU3OWY5YyIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidG9uaTEyMyIsImlhdCI6MTc2MDc3NjQyMn0.O7fdxfXt8YinIcxEFhAiLWBGhaRdbUR7nyucWx6ShiY

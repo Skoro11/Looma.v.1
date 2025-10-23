@@ -1,6 +1,6 @@
 import express from "express";
 import { TokenVerification } from "../utils/JWToken.js";
-import { LoginUser, RegisterUser } from "../controllers/user.js";
+import { LoginUser, Logout, RegisterUser } from "../controllers/user.js";
 const router = express.Router();
 
 /*  
@@ -18,4 +18,5 @@ router.get("/me", TokenVerification, (req, res) => {
   res.json({ success: true, user: req.user });
 });
 
+router.post("/logout", Logout);
 export default router;

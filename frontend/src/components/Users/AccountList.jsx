@@ -1,6 +1,21 @@
 import { useUserContext } from "../../context/UserContext";
 import { LogOut } from "lucide-react";
+import { LogoutUser } from "../../services/authService";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 export function AccountList() {
+  const navigate = useNavigate();
+  async function Logout() {
+    try {
+      const response = await LogoutUser();
+      if (response) {
+        navigate("/login");
+        toast.success("Successfully logged out");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
   const { user } = useUserContext();
   return (
     <section className="min-h-150 md:min-h-0 mx-2 md:mx-4 flex flex-col justify-between mb-4">
@@ -18,11 +33,10 @@ export function AccountList() {
         <div className="bg-[var(--color-body)] rounded-xl p-2 mb-10">
           <h2>{user.email}</h2>
         </div>
-        <a href="/" className="">
-          <button className="">
-            <LogOut />
-          </button>
-        </a>
+
+        <button onClick={() => Logout()} className="">
+          <LogOut />
+        </button>
       </div>
     </section>
   );

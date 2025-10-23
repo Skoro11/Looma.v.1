@@ -95,7 +95,14 @@ export async function LoginUser(req, res) {
     });
   }
 }
-
+export async function Logout(req, res) {
+  try {
+    res.clearCookie("looma_token", { path: "/" });
+    res.status(200).json({ message: "Token cleared" });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 export async function GetAllNonFriends(req, res) {
   try {
     const { id } = req.user;

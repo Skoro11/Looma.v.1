@@ -160,10 +160,23 @@ export function LandingPage() {
                   case "chats":
                     return (
                       <>
-                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full justify-between items-center py-3 px-2">
-                          <h1 className="text-2xl">Looma</h1>
+                        <div className="md:hidden fixed top-0 left-0 z-[100] w-full bg-[var(--color-accent)] flex justify-between items-center px-4 py-3 shadow-md border-b border-[var(--color-messages)]">
+                          {/* Logo + Text */}
+                          <div className="flex items-center gap-2">
+                            <img
+                              src="looma.png"
+                              alt="Looma Logo"
+                              className="h-8 w-8 object-contain"
+                            />
+                            <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-logo)] tracking-wide">
+                              Looma
+                            </h1>
+                          </div>
+
+                          {/* Sidebar / Three dots */}
                           <Sidebar />
                         </div>
+
                         <div className="mt-7 md:mt-0 ">
                           <div className="ml-2 md:ml-4">My messages</div>
                           <ChatsList />
@@ -174,17 +187,25 @@ export function LandingPage() {
                   case "friends":
                     return (
                       <>
-                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full items-center py-3 px-2">
+                        <div className="md:hidden fixed top-0 left-0 z-[100] w-full bg-[var(--color-accent)] flex items-center px-4 py-3 shadow-md border-b border-[var(--color-messages)]">
+                          {/* Back button */}
                           <button
                             onClick={() => setListState("chats")}
-                            className="mr-2"
+                            className="mr-3 p-2 rounded-full hover:bg-white/10 transition-colors"
+                            aria-label="Go Back"
                           >
-                            <ArrowLeft />
+                            <ArrowLeft className="w-5 h-5 text-white" />
                           </button>
-                          <span className="w-full">
+
+                          {/* Search bar */}
+                          <div className="flex-1">
                             <SearchBar />
-                          </span>
-                          <Sidebar />
+                          </div>
+
+                          {/* Sidebar / Three dots */}
+                          <div className="ml-3">
+                            <Sidebar />
+                          </div>
                         </div>
                         <div className=" md:min-h-0">
                           <div className="md:hidden mt-15 md:mt-0">
@@ -199,17 +220,25 @@ export function LandingPage() {
                   case "addUsers":
                     return (
                       <>
-                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full items-center py-3 px-2">
+                        <div className="md:hidden fixed top-0 left-0 z-[100] w-full bg-[var(--color-accent)] flex items-center px-4 py-3 shadow-md border-b border-[var(--color-messages)]">
+                          {/* Back button */}
                           <button
                             onClick={() => setListState("chats")}
-                            className="mr-2"
+                            className="mr-3 p-2 rounded-full hover:bg-white/10 transition-colors"
+                            aria-label="Go Back"
                           >
-                            <ArrowLeft />
+                            <ArrowLeft className="w-5 h-5 text-white" />
                           </button>
-                          <span className="w-full">
+
+                          {/* Search bar */}
+                          <div className="flex-1">
                             <SearchBar />
-                          </span>
-                          <Sidebar />
+                          </div>
+
+                          {/* Sidebar / Three dots */}
+                          <div className="ml-3">
+                            <Sidebar />
+                          </div>
                         </div>
                         <div className=" md:min-h-0">
                           <div className="mt-15 md:mt-0">
@@ -224,17 +253,25 @@ export function LandingPage() {
                   case "group":
                     return (
                       <>
-                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full items-center py-3 px-2">
+                        <div className="md:hidden fixed top-0 left-0 z-[100] w-full bg-[var(--color-accent)] flex items-center px-4 py-3 shadow-md border-b border-[var(--color-messages)]">
+                          {/* Back button */}
                           <button
                             onClick={() => setListState("chats")}
-                            className="mr-2"
+                            className="mr-3 p-2 rounded-full hover:bg-white/10 transition-colors"
+                            aria-label="Go Back"
                           >
-                            <ArrowLeft />
+                            <ArrowLeft className="w-5 h-5 text-white" />
                           </button>
-                          <span className="w-full">
+
+                          {/* Search bar */}
+                          <div className="flex-1">
                             <SearchBar />
-                          </span>
-                          <Sidebar />
+                          </div>
+
+                          {/* Sidebar / Three dots */}
+                          <div className="ml-3">
+                            <Sidebar />
+                          </div>
                         </div>
                         <div className="mt-15 md:mt-0">
                           <GroupList />
@@ -245,10 +282,21 @@ export function LandingPage() {
                   case "userAccount":
                     return (
                       <>
-                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full justify-between items-center py-3 px-2">
-                          <h1 className="text-2xl">Looma</h1>
+                        <div className="md:hidden fixed top-0 left-0 z-[100] w-full bg-[var(--color-accent)] flex justify-between items-center px-4 py-3 shadow-md border-b border-[var(--color-messages)]">
+                          <div className="flex items-center gap-2">
+                            <img
+                              src="looma.png"
+                              alt="Looma Logo"
+                              className="h-8 w-8 object-contain"
+                            />
+                            <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-logo)] tracking-wide">
+                              Looma
+                            </h1>
+                          </div>
+
                           <Sidebar />
                         </div>
+
                         <div className="mt-13 md:mt-0">
                           <AccountList />
                         </div>
