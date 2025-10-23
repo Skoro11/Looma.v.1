@@ -77,7 +77,7 @@ export function ChatsList() {
     fetchUserChats();
   }, []);
   return (
-    <div className="">
+    <div className="overflow-y-scroll h-full scrollbar-hide max-h-100">
       <AnimatePresence>
         {allUserChats.map((item) => (
           <motion.div

@@ -120,7 +120,7 @@ export function ChatWindow() {
         </div>
       </div>
 
-      <ul className="h-screen md:max-h-100 bg-[var(--color-body)]  md:pt-0 overflow-y-auto   ">
+      <ul className="overflow-y-scroll h-screen scrollbar-hide  md:max-h-100 bg-[var(--color-body)]  md:pt-0   ">
         {messages.map((message) => (
           <li key={message._id}>
             {/* <div>{JSON.stringify(message)}</div> */}
@@ -159,10 +159,17 @@ export function ChatWindow() {
         ))}
       </ul>
 
-      <div className="sticky md:static bg-[var(--color-body)] bottom-0 w-full flex px-2 pb-3 ">
+      <div className="sticky md:static bg-[var(--color-body)] bottom-0 w-full flex px-2 py-3 ">
         <input
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+
+              if (messageInput?.trim()) sendMessage();
+            }
+          }}
           type="text"
           className="flex-1 py-2 px-3 mr-2 text-white outline-none bg-[var(--color-messages)] rounded-xl"
           placeholder="Message..."

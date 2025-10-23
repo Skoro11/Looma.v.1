@@ -125,10 +125,10 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="max-w-[1400px] mx-auto md:pt-10">
-      <div className="md:bg-[var(--color-body)] shadow-xl md:rounded-2xl md:p-3 text-white ">
+    <div className="max-w-[1200px] mx-auto md:pt-10">
+      <div className="md:mx-5 md:bg-[var(--color-body)] md:shadow-xl md:rounded-2xl md:p-3 text-white ">
         <div className="md:flex">
-          <nav className="hidden md:flex w-1/7 bg-[var(--color-primary)] lg:w-1/15 flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
+          <nav className="hidden md:flex md:w-1/10 lg:min-w-1/18 bg-[var(--color-primary)]  flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
             <div className="flex flex-col gap-3 items-center">
               <ChatsButton listState={setListState} listStateValue={"chats"} />
               <ContactsButton
@@ -149,7 +149,7 @@ export function LandingPage() {
             </div>
           </nav>
 
-          <div className="block md:rounded-r-xl w-full md:w-1/2 lg:w-1/4 bg-[var(--color-accent)] ">
+          <div className="block md:rounded-r-xl w-full md:w-1/2 lg:min-w-1/4 bg-[var(--color-accent)] ">
             <span className="hidden md:block">
               <SearchBar />
             </span>
@@ -186,7 +186,7 @@ export function LandingPage() {
                           </span>
                           <Sidebar />
                         </div>
-                        <div className="min-h-150 md:min-h-0">
+                        <div className=" md:min-h-0">
                           <div className="md:hidden mt-15 md:mt-0">
                             <UserList />
                           </div>
@@ -211,7 +211,7 @@ export function LandingPage() {
                           </span>
                           <Sidebar />
                         </div>
-                        <div className="min-h-150 md:min-h-0">
+                        <div className=" md:min-h-0">
                           <div className="mt-15 md:mt-0">
                             <UserList />
                           </div>

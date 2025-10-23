@@ -83,7 +83,7 @@ export default function GroupList() {
   }, []);
 
   return (
-    <div className="md:mx-4 min-h-150 md:min-h-0">
+    <div className="md:mx-4  md:min-h-0">
       <h1 className="ml-2 mt-2"> New Group</h1>
 
       <div>
