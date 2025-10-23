@@ -1,7 +1,7 @@
 import RemoveFriendButton from "../buttons/RemoveFriendButton";
 import { useUserContext } from "../../context/UserContext";
 import { useChatContext } from "../../context/ChatContext";
-import { CreateOrOpenChat } from "../../api/chat";
+import { CreateOrOpenChat } from "../../services/chatService";
 import { toast } from "react-toastify";
 export function FriendListMobile({ setIsMobileChatVisible }) {
   const {

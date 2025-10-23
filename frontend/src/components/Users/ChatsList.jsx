@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAllUserChats, getChatBasedOnId } from "../../api/chat";
+import { getAllUserChats, getChatBasedOnId } from "../../services/chatService";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
 import { toast } from "react-toastify";

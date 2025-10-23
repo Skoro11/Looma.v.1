@@ -5,7 +5,7 @@ import {
   deleteGroupChat,
   getGroupChat,
   getGroupChatWithChatId,
-} from "../../api/chat";
+} from "../../services/chatService";
 import UserIcon from "../icons/UserIcon";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";

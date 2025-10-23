@@ -3,7 +3,7 @@ import { useUserContext } from "../../context/UserContext";
 import { getHoursAndMinutes } from "../../utils/TimeConverter";
 import { useRef, useEffect } from "react";
 import { toast } from "react-toastify";
-import { RemoveChat } from "../../api/chat";
+import { RemoveChat } from "../../services/chatService";
 import { ArrowLeft, UserIcon, EllipsisVertical } from "lucide-react";
 import SendMessageButton from "../buttons/SendMessageButton";
 export function MobileChat() {

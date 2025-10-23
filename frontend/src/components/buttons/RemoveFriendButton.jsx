@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { removeFriend } from "../../api/user";
+import { removeFriend } from "../../services/userService";
 import { useUserContext } from "../../context/UserContext";
 function RemoveFriendButton({ itemId }) {
   const { setOtherUsers, setUserFriends, userFriends } = useUserContext();

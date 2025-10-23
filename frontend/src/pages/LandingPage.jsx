@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { CheckToken } from "../api/authApi";
+import { CheckToken } from "../services/authService.js";
 
 import { toast } from "react-toastify";
 
@@ -18,8 +18,8 @@ import DeleteChatButton from "../components/buttons/DeleteChatButton";
 import FriendsButton from "../components/buttons/sidebar/FriendsButton";
 import { useChatContext } from "../context/ChatContext";
 import { useUserContext } from "../context/UserContext";
-import { fetchUserFriends, getNonFriends } from "../api/user";
-import { RemoveChat, sendAMessage } from "../api/chat";
+import { fetchUserFriends, getNonFriends } from "../services/userService";
+import { RemoveChat, sendAMessage } from "../services/chatService";
 import AccountList from "../components/Users/AccountList";
 import { ChatsList } from "../components/Users/ChatsList";
 import { MobileLandingPage } from "./MobileLandingPage";

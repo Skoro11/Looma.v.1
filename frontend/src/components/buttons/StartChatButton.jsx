@@ -1,5 +1,5 @@
 import { useChatContext } from "../../context/ChatContext";
-import { CreateOrOpenChat } from "../../api/chat";
+import { CreateOrOpenChat } from "../../services/chatService";
 import { toast } from "react-toastify";
 /* import { socket } from "../../utils/socket"; */
 export function StartChatButton({ itemId, itemUsername }) {

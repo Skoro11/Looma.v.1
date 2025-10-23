@@ -1,7 +1,7 @@
-import { LoginUser } from "../api/user";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { LoginUser } from "../services/userService";
 function LoginPage() {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");

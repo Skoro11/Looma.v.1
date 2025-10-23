@@ -1,4 +1,4 @@
-import { addFriend } from "../../api/user";
+import { addFriend } from "../../services/userService";
 import { useUserContext } from "../../context/UserContext";
 import { toast } from "react-toastify";
 function AddFriendButton({ itemId }) {

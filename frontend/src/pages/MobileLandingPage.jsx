@@ -3,7 +3,7 @@ import { useRef, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useUserContext } from "../context/UserContext";
 import { getHoursAndMinutes } from "../utils/TimeConverter";
-import { sendAMessage, RemoveChat } from "../api/chat";
+import { sendAMessage, RemoveChat } from "../services/chatService";
 import { UserListMobile } from "../components/mobile/UserListMobile";
 import SearchBar from "../components/SearchBar";
 import UserIcon from "../components/icons/UserIcon";

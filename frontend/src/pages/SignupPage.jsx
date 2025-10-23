@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RegisterUser } from "../api/user";
+import { RegisterUser } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function SignupPage() {

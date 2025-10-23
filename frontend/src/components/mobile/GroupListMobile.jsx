@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { Check } from "lucide-react";
 
-import { createGroupChat, getGroupChat } from "../../api/chat";
+import { createGroupChat, getGroupChat } from "../../services/chatService";
 export function GroupListMobile() {
   const { userFriends } = useUserContext();
   const {

@@ -1,4 +1,4 @@
-import { sendAMessage } from "../../api/chat";
+import { sendAMessage } from "../../services/chatService";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
 import { toast } from "react-toastify";
