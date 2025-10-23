@@ -10,10 +10,7 @@ function App() {
   return (
     <UserProvider>
       <ChatProvider>
-        <div
-          className="min-h-screen w-full bg-center bg-cover"
-          style={{ backgroundImage: "url('/background.jpg')" }}
-        >
+        <div className="min-h-screen bg-[var(--color-accent)] w-full bg-center bg-cover md:bg-[url('/background.jpg')]">
           <Router>
             <Routes>
               <Route path="/" element={<LoginPage />} />

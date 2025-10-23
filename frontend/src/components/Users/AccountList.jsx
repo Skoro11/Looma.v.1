@@ -3,7 +3,7 @@ import { LogOut } from "lucide-react";
 export function AccountList() {
   const { user } = useUserContext();
   return (
-    <section className=" mx-2 md:mx-4 flex flex-col justify-between mb-4">
+    <section className="min-h-150 md:min-h-0 mx-2 md:mx-4 flex flex-col justify-between mb-4">
       <div>
         <h1 className="mb-2">Account details</h1>
         <h1 className="font-bold">User id</h1>
@@ -18,12 +18,12 @@ export function AccountList() {
         <div className="bg-[var(--color-body)] rounded-xl p-2 mb-10">
           <h2>{user.email}</h2>
         </div>
+        <a href="/" className="">
+          <button className="">
+            <LogOut />
+          </button>
+        </a>
       </div>
-      <a href="/" className="">
-        <button className="">
-          <LogOut />
-        </button>
-      </a>
     </section>
   );
 }

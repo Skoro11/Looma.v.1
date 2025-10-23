@@ -4,7 +4,7 @@ export function ChatsButton({ listState, listStateValue }) {
       onClick={() => listState(listStateValue)}
       aria-label="Chats"
       title="Chats"
-      className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
+      className="md:p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@ export function ContactsButton({ listState, listStateValue }) {
       onClick={() => listState(listStateValue)}
       aria-label="Add Friends"
       title="Add Friends"
-      className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
+      className="md:p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ export function FriendsButton({ listState, listStateValue }) {
       onClick={() => listState(listStateValue)}
       aria-label="Friends"
       title="Friends"
-      className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
+      className="md:p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@ export function GroupButton({ listState, listStateValue }) {
       onClick={() => listState(listStateValue)}
       aria-label="Groups"
       title="Groups"
-      className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
+      className="md:p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -99,12 +99,12 @@ export function AccountButton({ listState, listStateValue }) {
       onClick={() => listState(listStateValue)}
       aria-label="Account details"
       title="Account details"
-      className="p-1 rounded-full bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+      className=" md:p-1 rounded-full md:bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        className="h-7 w-7 text-white"
+        className="h-6 w-6 text-white"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.5}

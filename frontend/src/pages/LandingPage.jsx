@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
 import { CheckToken } from "../services/authService.js";
-
+import Sidebar from "../components/buttons/sidebar/Sidebar.jsx";
 import { toast } from "react-toastify";
 
 import { UserList } from "../components/Users/UserList";
 import { FriendList } from "../components/Users/FriendList";
 import { getHoursAndMinutes } from "../utils/TimeConverter";
 import GroupList from "../components/Users/GroupList";
+import { ArrowLeft } from "lucide-react";
 import {
   ChatsButton,
   GroupButton,
@@ -23,9 +24,11 @@ import { fetchUserFriends, getNonFriends } from "../services/userService";
 import { RemoveChat, sendAMessage } from "../services/chatService";
 import AccountList from "../components/Users/AccountList";
 import { ChatsList } from "../components/Users/ChatsList";
-import { MobileLandingPage } from "./MobileLandingPage";
 import { socket } from "../utils/socket";
 import { ArrowUpButton } from "../components/buttons/ArrowUpButton.jsx";
+import { ChatWindow } from "../components/ChatWindow.jsx";
+import { useMediaQuery } from "../hooks/useMediaQuery.jsx";
+import { useState } from "react";
 export function LandingPage() {
   const { user, setUser, setOtherUsers, setUserFriends } = useUserContext();
   const {
@@ -45,12 +48,8 @@ export function LandingPage() {
     allUserChats,
     setAllUserChats,
   } = useChatContext();
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const [showChat, setShowChat] = useState(false);
   useEffect(() => {
     socket.emit("connection", () => {
       console.log("Connected to server with id:", socket.id);
@@ -128,17 +127,10 @@ export function LandingPage() {
   return (
     <div className="max-w-[1400px] mx-auto md:pt-10">
       <div className="md:bg-[var(--color-body)] shadow-xl md:rounded-2xl md:p-3 text-white ">
-        <div className=" md:hidden">
-          <MobileLandingPage />
-        </div>
-
-        <div className="hidden md:flex">
-          <nav className=" w-1/7 bg-[var(--color-primary)] lg:w-1/15 md:flex flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
+        <div className="md:flex">
+          <nav className="hidden md:flex w-1/7 bg-[var(--color-primary)] lg:w-1/15 flex-col justify-between items-center py-4 rounded-l-xl shadow-md">
             <div className="flex flex-col gap-3 items-center">
-              {/* <HomeButton listState={setListState} listStateValue={""} /> */}
-
               <ChatsButton listState={setListState} listStateValue={"chats"} />
-
               <ContactsButton
                 listState={setListState}
                 listStateValue="addUsers"
@@ -148,8 +140,6 @@ export function LandingPage() {
                 listStateValue="friends"
               />
               <GroupButton listState={setListState} listStateValue={"group"} />
-
-              {/* <SettingsButton listState={setListState} listStateValue="" /> */}
             </div>
             <div className="mt-2">
               <AccountButton
@@ -159,102 +149,129 @@ export function LandingPage() {
             </div>
           </nav>
 
-          <div className="block rounded-r-xl w-full md:w-1/2 lg:w-1/4 bg-[var(--color-accent)] ">
-            <SearchBar />
-            <ul className="">
+          <div className="block md:rounded-r-xl w-full md:w-1/2 lg:w-1/4 bg-[var(--color-accent)] ">
+            <span className="hidden md:block">
+              <SearchBar />
+            </span>
+
+            <div className="">
               {(() => {
                 switch (listState) {
                   case "chats":
-                    return <ChatsList />;
+                    return (
+                      <>
+                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full justify-between items-center py-3 px-2">
+                          <h1 className="text-2xl">Looma</h1>
+                          <Sidebar />
+                        </div>
+                        <div className="mt-7 md:mt-0 ">
+                          <div className="ml-2 md:ml-4">My messages</div>
+                          <ChatsList />
+                        </div>
+                      </>
+                    );
+
                   case "friends":
-                    return <FriendList />;
+                    return (
+                      <>
+                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full items-center py-3 px-2">
+                          <button
+                            onClick={() => setListState("chats")}
+                            className="mr-2"
+                          >
+                            <ArrowLeft />
+                          </button>
+                          <span className="w-full">
+                            <SearchBar />
+                          </span>
+                          <Sidebar />
+                        </div>
+                        <div className="min-h-150 md:min-h-0">
+                          <div className="md:hidden mt-15 md:mt-0">
+                            <UserList />
+                          </div>
+                          <div>
+                            <FriendList />
+                          </div>
+                        </div>
+                      </>
+                    );
                   case "addUsers":
-                    return <UserList />;
+                    return (
+                      <>
+                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full items-center py-3 px-2">
+                          <button
+                            onClick={() => setListState("chats")}
+                            className="mr-2"
+                          >
+                            <ArrowLeft />
+                          </button>
+                          <span className="w-full">
+                            <SearchBar />
+                          </span>
+                          <Sidebar />
+                        </div>
+                        <div className="min-h-150 md:min-h-0">
+                          <div className="mt-15 md:mt-0">
+                            <UserList />
+                          </div>
+                          <div className="md:hidden">
+                            <FriendList />
+                          </div>
+                        </div>
+                      </>
+                    );
                   case "group":
-                    return <GroupList />;
+                    return (
+                      <>
+                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full items-center py-3 px-2">
+                          <button
+                            onClick={() => setListState("chats")}
+                            className="mr-2"
+                          >
+                            <ArrowLeft />
+                          </button>
+                          <span className="w-full">
+                            <SearchBar />
+                          </span>
+                          <Sidebar />
+                        </div>
+                        <div className="mt-15 md:mt-0">
+                          <GroupList />
+                        </div>
+                      </>
+                    );
+
                   case "userAccount":
-                    return <AccountList />;
+                    return (
+                      <>
+                        <div className="md:hidden z-[100] flex fixed top-0 left-0 bg-[var(--color-accent)] w-full justify-between items-center py-3 px-2">
+                          <h1 className="text-2xl">Looma</h1>
+                          <Sidebar />
+                        </div>
+                        <div className="mt-13 md:mt-0">
+                          <AccountList />
+                        </div>
+                      </>
+                    );
+                  case "mobileChat":
+                    return (
+                      <>
+                        <ChatWindow />
+                      </>
+                    );
                   default:
                     return;
                 }
               })()}
-            </ul>
+            </div>
           </div>
 
-          <div className="  w-full relative  ">
+          <div className="hidden md:block w-full relative  ">
             {isChatVisible ? (
-              <div>
-                <div className="mx-2 bg-[var(--color-messages)] rounded-xl  mb-2 py-2 pl-3 flex items-center justify-between">
-                  <div className="flex items-center">
-                    <span className="mr-2">
-                      <UserIcon />
-                    </span>
-                    <span>{activeUsername} </span>
-                  </div>
-
-                  <div className="mr-4">
-                    <span>
-                      {/* <DeleteChatButton
-                        deleteChat={() => DeleteChat(currentChat)}
-                      /> */}
-                      <TrashButton onClick={() => DeleteChat(currentChat)} />
-                    </span>
-                  </div>
-                </div>
-                {/* <div>Json {JSON.stringify(messages)}</div>
-                <div>{JSON.stringify(user)}</div> */}
-                <ul className="h-100 overflow-y-auto   ">
-                  {messages.map((message) => (
-                    <li key={message._id}>
-                      {/* <div>{JSON.stringify(message)}</div> */}
-                      {message.senderId._id === user.id ||
-                      message.senderId === user.id ? (
-                        <div className="text-right ">
-                          <h1 className="">
-                            <span className="font-bold "></span>
-                          </h1>
-                          <div className="flex justify-end my-2">
-                            <p className="bg-[var(--color-primary)] w-max py-1 px-3 mr-2 rounded-lg text-white">
-                              {message.content}
-                            </p>
-                          </div>
-                          <span className="mr-2">
-                            {getHoursAndMinutes(message.createdAt)}{" "}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="text-left">
-                          <h1 className="">
-                            <span className="font-bold"></span>
-                          </h1>
-                          <div className="flex justify-start my-2">
-                            <p className="bg-[var(--color-messages)] w-max py-1 px-3 ml-2 rounded-lg text-white">
-                              {message.content}
-                            </p>
-                          </div>
-                          <span className="ml-2">
-                            {getHoursAndMinutes(message.createdAt)}{" "}
-                          </span>
-                        </div>
-                      )}
-                      <div ref={messagesEndRef} />
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="w-full flex px-2 my-3 ">
-                  <input
-                    value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
-                    type="text"
-                    className="flex-1 py-2 px-3 mr-2 text-white outline-none bg-[var(--color-messages)] rounded-xl"
-                    placeholder="Message..."
-                  />
-                  <ArrowUpButton onClick={() => sendMessage()} />
-                </div>
-              </div>
+              <ChatWindow />
             ) : (
-              <div className="min-h-130 ">
+              <div className="hidden md:block min-h-130 ">
                 <div className="mx-2 bg-[var(--color-messages)] rounded-xl mt-4 mb-2 py-2 pl-3 flex items-center justify-between">
                   <span className="mr-2">No chats Selected</span>
                 </div>

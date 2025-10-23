@@ -32,17 +32,17 @@ export function UserList() {
   }
   return (
     <ul>
-      <h1 className="mx-4">Add friends</h1>
+      <h1 className="ml-2 md:mx-4">Add friends</h1>
       {otherUsers.map((item) => (
         <div
           key={item._id}
-          className="p-4 border rounded-2xl mx-4 my-4 bg-[var(--color-messages)] shadow-sm"
+          className="md:p-4 md:border md:rounded-2xl md:mx-4 my-4 md:bg-[var(--color-messages)] md:shadow-sm"
         >
           <li className="flex gap-4 items-center">
             <UserIcon />
             {/* Content */}
             <div className="flex-1">
-              <div className="flex justify-between items-center mb-1">
+              <div className="flex justify-between items-center mb-1 mr-2 md:mr-0">
                 <span className="font-semibold text-whit ">
                   {item.username}
                 </span>

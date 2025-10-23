@@ -1,28 +1,28 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { EllipsisVertical } from "lucide-react";
 import {
-  MessageCircle,
-  Users,
-  TextQuote,
-  UserRoundPlus,
-  CircleUser,
-  EllipsisVertical,
-} from "lucide-react";
+  ChatsButton,
+  ContactsButton,
+  FriendsButton,
+  GroupButton,
+  AccountButton,
+} from "./SidebarButtons";
 import { useChatContext } from "../../../context/ChatContext";
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const { setListState, setIsMobileChatVisible } = useChatContext();
   const navItems = [
-    { icon: <MessageCircle size={22} />, label: "My messages", state: "chats" },
+    { icon: <ChatsButton />, label: "My messages", state: "chats" },
     {
-      icon: <UserRoundPlus size={22} />,
+      icon: <ContactsButton />,
       label: "Add users",
       state: "addUsers",
     },
-    { icon: <Users size={22} />, label: "Friends", state: "friends" },
-    { icon: <TextQuote size={22} />, label: "Groups", state: "group" },
+    { icon: <FriendsButton />, label: "Friends", state: "friends" },
+    { icon: <GroupButton />, label: "Groups", state: "group" },
     {
-      icon: <CircleUser size={22} />,
+      icon: <AccountButton />,
       label: "My Account",
       state: "userAccount",
     },
