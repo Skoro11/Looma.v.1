@@ -90,7 +90,7 @@ export function LandingPage() {
   }
   async function getUsers() {
     const response = await getNonFriends();
-    const users = response.data.user;
+    const users = response.data.users;
     setOtherUsers(users);
   }
   async function getUserFriends() {

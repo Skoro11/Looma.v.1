@@ -1,24 +1,30 @@
 import Chat from "../models/Chat.js";
 import Message from "../models/Message.js";
+import logger from "../utils/logger.js";
 export async function createChat(req, res) {
   try {
     const userId = req.user.id;
     const { friendId } = req.body;
     let chatId = "";
+    if (!friendId) {
+      logger.warn(`User ${userId} tried to create chat without friendId`);
+      return res.status(400).json({ error: "Friend ID required" });
+    }
 
-    if (!friendId) return res.status(400).json({ error: "Friend ID required" });
-
+    logger.info(
+      `User ${userId} is attempting to create/find chat with friend ${friendId}`
+    );
     let chat = await Chat.findOne({
       participants: { $all: [userId, friendId], $size: 2 },
     });
 
-    /* console.log(chat); */
     if (!chat) {
       chat = await Chat.create({ participants: [userId, friendId] });
-
+      logger.info(
+        `New chat created with ID ${chatId} for users ${userId} and ${friendId}`
+      );
       chatId = chat._id;
 
-      /* console.log("Chat Id is " + chatId); */
       const messages = await Message.find({ chatId })
         .populate("senderId", "username")
         .sort({ createdAt: 1 }); // oldest first
@@ -28,16 +34,21 @@ export async function createChat(req, res) {
     }
     if (chat) {
       chatId = chat._id;
-      /* console.log("Chat Id is " + chatId); */
+      logger.info(
+        `Existing chat found with ID ${chatId} for users ${userId} and ${friendId}`
+      );
       const messages = await Message.find({ chatId })
         .populate("senderId", "username")
         .sort({ createdAt: 1 }); // oldest first
 
       return res
         .status(200)
-        .json({ success: true, chat: chat._id, messages: messages });
+        .json({ success: true, chatId: chat._id, messages: messages });
     }
   } catch (error) {
+    logger.error(
+      `Error creating/finding chat for users ${userId} and ${friendId}: ${error.message}`
+    );
     res.status(500).json({ success: false, errorMessage: error.message });
   }
 }
@@ -78,7 +89,7 @@ export async function createGroupChat(req, res) {
     console.log("Error with create group chat", error.message);
   }
 }
-export async function getGroupChat(req, res) {
+export async function getGroupChats(req, res) {
   try {
     const { id } = req.user;
 
@@ -87,7 +98,7 @@ export async function getGroupChat(req, res) {
       "participants.2": { $exists: true }, // has at least 3 participants
     }).populate("participants", "_id username");
 
-    res.status(200).json({ chat: chats });
+    res.status(200).json({ chats: chats });
   } catch (error) {
     console.log("Error with gettingGroupChat", error.message);
   }
@@ -118,7 +129,7 @@ export async function getChatByUserId(req, res) {
         };
       })
     );
-    res.status(200).json({ chat: chatsWithLastMessage });
+    res.status(200).json({ chats: chatsWithLastMessage });
   } catch (error) {
     console.log("Error with user chats ", error.message);
   }
@@ -132,7 +143,7 @@ export async function getGroupChatByChatId(req, res) {
     console.log("Parameters id", chat);
     res.status(200).json({
       success: true,
-      chat_id: chat._id,
+      chatId: chat._id,
       name: chat.name,
       messages: messages,
     });
@@ -164,7 +175,8 @@ export async function removeChat(req, res) {
 export async function SendMessage(req, res) {
   try {
     const senderId = req.user.id;
-    const { chatId, content } = req.body;
+    const chatId = req.params.id;
+    const { content } = req.body;
 
     if (!chatId || !content) {
       return res.status(400).json({ message: "No Message Data" });
@@ -198,7 +210,7 @@ export async function SendMessage(req, res) {
 export async function getAllChats(req, res) {
   const allChats = await Chat.find({});
 
-  res.status(200).json({ allChats });
+  res.status(200).json({ chats: allChats });
 }
 
 export async function getChatById(req, res) {

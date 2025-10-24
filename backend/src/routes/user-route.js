@@ -9,21 +9,22 @@ import {
 const router = express.Router();
 import { TokenVerification } from "../utils/JWToken.js";
 
-/* GET /user/others 
+/* GET /users/exclude-me 
 Retrieves all users except the current authenticated user (Gets authenticated user ID from token)*/
-router.get("/others", TokenVerification, GetAllNonFriends);
+router.get("/exclude-me", TokenVerification, GetAllNonFriends);
 
-/* POST /user/friends
+/* POST /users/friends
 Adds a new friend to a user */
-router.post("/friends/add", TokenVerification, AddFriend);
-export default router;
+router.post("/friends", TokenVerification, AddFriend);
 
-/* DELETE /user/friends/remove/{:id}
+/* DELETE /users/friends/remove/{:id}
 Remove friend from identified user */
-router.delete("/friends/remove/:id", TokenVerification, RemoveFriend);
+router.delete("/friends/:id", TokenVerification, RemoveFriend);
 
-/* GET /user/friends/all
+/* GET /users/friends/all
 Get all friends from the user */
-router.get("/friends/all", TokenVerification, GetFriends);
+router.get("/friends", TokenVerification, GetFriends);
 
 /* router.delete("/", DeleteAllUsers); */
+
+export default router;

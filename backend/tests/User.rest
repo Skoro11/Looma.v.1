@@ -1,34 +1,15 @@
 @BASE_URL=http://localhost:3000
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Zjk0YjI0OTY0NWNhNWNmYmU3OTliMiIsImVtYWlsIjoic2tvcm8udG9uaTAxQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiVG9uaSIsImlhdCI6MTc2MTIwNDkwNn0.TJB6NHl2hQ6hwKfxSocm8JNsXJNIqQCgXH8T0a-heB8
-### Register User
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZmI0MTI3NDUxOTkzY2ExYjBlZmJhYiIsImVtYWlsIjoidG9uaUB0ZXN0IiwidXNlcm5hbWUiOiJ0b25pIiwiaWF0IjoxNzYxMjk3MTAwfQ.VVqR1fTMUREHUKSUOAFn0TaEq8m6nVe4nYZFuAkobBU
 
-POST {{BASE_URL}}/auth/register
-Content-Type: application/json
-
-{
-  "username": "Tom",
-  "email": "toni@example.com2",
-  "password": "strongpassword"
-}
-
-### Login User
-
-POST {{BASE_URL}}/auth/login
-Content-Type: application/json
-
-{
- "email": "toni@example.com",
-  "password": "strongpassword"
-}
 
 ### Get all users
 
-GET {{BASE_URL}}/user/others
+GET {{BASE_URL}}/api/users/exclude-me
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 ### Add friend to a user
-POST {{BASE_URL}}/user/friends/add
+POST {{BASE_URL}}/api/users/friends
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
@@ -36,20 +17,19 @@ Authorization: Bearer {{TOKEN}}
   "friendId":"68f3629bc2d3ee599b365b05"
 }
 
-
 ### Remove friend from a user
 
-DELETE {{BASE_URL}}/user/friends/remove/68f3629bc2d3ee599b365b05
+DELETE {{BASE_URL}}/api/users/friends/68f3629bc2d3ee599b365b05
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 
 ### Get all user Friends
 
-GET {{BASE_URL}}/user/friends/all
+GET {{BASE_URL}}/api/users/friends
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 ###
 
-DELETE {{BASE_URL}}/user
+DELETE {{BASE_URL}}/users

@@ -83,12 +83,10 @@ export default function GroupList() {
   }, []);
 
   return (
-    <div className="md:mx-4 md:min-h-0 overflow-y-scroll h-full scrollbar-hide max-h-[460px] relative p-2 md:p-0">
-      <h1 className="ml-2 mt-2 text-lg font-semibold text-white md:text-gray-200">
-        New Group
-      </h1>
+    <div className="md:mx-2 md:min-h-0 overflow-y-scroll h-screen scrollbar-hide md:max-h-[460px] relative  md:p-0">
+      <h1 className="mx-2 md:mx-4">New Group</h1>
 
-      <ul className="space-y-4 mt-2">
+      <ul className="space-y-4 mt-2 pb-20 md:pb-10 mx-2">
         {userFriends.map((item) => {
           const isSelected = localGroup.some((u) => u._id === item._id);
           return (
@@ -149,7 +147,7 @@ export default function GroupList() {
       </ul>
 
       {/* Sticky Create Group Button */}
-      <div className="sticky bottom-0 bg-[var(--color-accent)] pt-3">
+      <div className="fixed md:sticky w-full bottom-0 bg-[var(--color-accent)] py-3 md:p-2">
         <CreateNewGroup
           localGroup={localGroup}
           createGroup={createGroup}

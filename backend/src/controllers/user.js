@@ -72,6 +72,7 @@ export async function LoginUser(req, res) {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        path: "/",
         maxAge: 1500 * 60 * 1000,
       });
 
@@ -131,7 +132,7 @@ export async function GetAllNonFriends(req, res) {
       return true;
     });
 
-    return res.status(200).json({ success: true, user: nonFriends });
+    return res.status(200).json({ success: true, users: nonFriends });
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
   }
@@ -146,7 +147,6 @@ export async function AddFriend(req, res) {
     const existingFriend = user.friends.includes(friendId);
     const usernameFriend = await User.findById(friendId);
     const username = usernameFriend.username;
-    console.log("Username friend", username);
     if (!existingFriend) {
       user.friends.push(friendId);
       await user.save();

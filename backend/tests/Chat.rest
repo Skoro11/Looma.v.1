@@ -4,16 +4,27 @@
 @TOKEN =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjM2NTQ4MzZiYjFlNWRiYzg2YWMxMCIsImVtYWlsIjoidG9uaUB0ZXN0LmNvbSIsInVzZXJuYW1lIjoiVG9uaSIsImlhdCI6MTc2MDk2NzA4MH0.75t3ZyM1DXUyhuKWevsCR_vBRWUw7qBg74Qf8CmEarU
 
 ### Create chat by FriendId
-POST {{BASE_URL}}/chats
+POST {{BASE_URL}}/api/chats
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 {
-  "friendId": "68e7ad64b40c24c8918e4e05"
+  "friendId":"68e7ad64b40c24c8918e4e05"
 }
 
+### Send a message 
+
+POST {{BASE_URL}}/api/chats/68fb3bec1433455b77968ba3/messages
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "content":"Hi"
+}
+
+
 ### Create group chat 
-POST {{BASE_URL}}/chats/group
+POST {{BASE_URL}}/api/chats/groups
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
@@ -24,28 +35,28 @@ Authorization: Bearer {{TOKEN}}
 }
 
 ### Get group chats
-POST {{BASE_URL}}/chats/group/all
+GET {{BASE_URL}}/api/chats/groups
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 ### Find chat by user id
-GET {{BASE_URL}}/chats/user
+GET {{BASE_URL}}/api/chats/users
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 ### Find all chats
 
-GET {{BASE_URL}}/chats/all
+GET {{BASE_URL}}/api/chats
 Content-Type: application/json
 
 ### Delete chat by ID
-@CHAT_ID=68f117fe285f9fb1749de411
-DELETE {{BASE_URL}}/chats/delete/{{CHAT_ID}}
+@CHAT_ID=68f255f7fa8d51b323c9577e
+DELETE {{BASE_URL}}/api/chats/{{CHAT_ID}}
 Content-Type: application/json
 
 
 ### Get group chat based on chat Id
-GET {{BASE_URL}}/chats/group/68f64c257cd0ff35b409aa25
+GET {{BASE_URL}}/api/chats/68f8ea9e53d8061193dc5db4/groups
 
 ### Get chat based on id 
-GET {{BASE_URL}}/chats/68f768aff70537020bf6f19e
+GET {{BASE_URL}}/api/chats/68f768aff70537020bf6f19e

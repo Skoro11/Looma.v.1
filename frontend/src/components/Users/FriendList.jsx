@@ -61,7 +61,7 @@ export function FriendList() {
     }
   }
   return (
-    <ul className="overflow-y-scroll h-full scrollbar-hide max-h-115">
+    <ul className="md:overflow-y-scroll h-screen scrollbar-hide md:max-h-115">
       <h1 className=" mx-2 md:mx-4">My Friends</h1>
       {userFriends.map((item) => (
         <div

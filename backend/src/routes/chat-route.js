@@ -7,7 +7,7 @@ import {
   removeChat,
   SendMessage,
   createGroupChat,
-  getGroupChat,
+  getGroupChats,
   getGroupChatByChatId,
   getChatById,
 } from "../controllers/chatController.js";
@@ -15,43 +15,44 @@ import User from "../models/User.js";
 const router = express.Router();
 
 /* 
-POST /chats 
+POST /api/chats
 Creates chat with one person 
 requires "friendId"*/
 router.post("", TokenVerification, createChat);
 
 /* 
-GET /chats/user
+GET /api/chats/users/:id
 Finds all chats from te person with this ID */
-router.get("/user", TokenVerification, getChatByUserId);
+router.get("/users", TokenVerification, getChatByUserId);
 
 /* 
-GET /chats/all
+GET /api/chats
 Gets all existing chats independent of user */
-router.get("/all", getAllChats);
+router.get("", getAllChats);
 
-/* DELETE /chats/delete/{:id}
+/* DELETE /api/chats/{:id}
 Deletes chat based on id */
-router.delete("/delete/{:id}", removeChat);
+router.delete("/:id", removeChat);
 
-/* POST /chats/message
+/* POST /api/chats/:id/messages
 sends message to another User
 requires "chatId" and "content" */
-router.post("/message", TokenVerification, SendMessage);
+router.post("/:id/messages", TokenVerification, SendMessage);
 
-/* POST /chats/createGroupChat
+/* POST /api/chats/groups
 Creates a group chat requires "participants:[]" */
-router.post("/group", TokenVerification, createGroupChat);
+router.post("/groups", TokenVerification, createGroupChat);
 
-/* GET /chats/group/all
+/* GET /api/chats/groups
 Fetches all Chats */
-router.post("/group/all", TokenVerification, getGroupChat);
+router.get("/groups", TokenVerification, getGroupChats);
 
-/* GET /chats/group/{:id}
+/* GET /api/chats/:id/group/
 Gets group chat based on chat id */
-router.get("/group/{:id}", getGroupChatByChatId);
-export default router;
+router.get("/:id/groups", getGroupChatByChatId);
 
-/* GET /chats/{:id}
+/* GET /api/chats/{:id}
 Get chat based on id */
-router.get("/{:id}", getChatById);
+router.get("/:id", getChatById);
+
+export default router;

@@ -3,7 +3,7 @@ import axios from "./axiosInstance";
 
 export async function getNonFriends() {
   try {
-    const response = await axios.get(`/user/others`);
+    const response = await axios.get(`/users/exclude-me`);
     return response;
   } catch (error) {
     handleApiError(error);
@@ -13,7 +13,7 @@ export async function getNonFriends() {
 
 export async function fetchUserFriends() {
   try {
-    const response = await axios.get(`/user/friends/all`);
+    const response = await axios.get(`/users/friends`);
     return response;
   } catch (error) {
     handleApiError(error);
@@ -23,7 +23,7 @@ export async function fetchUserFriends() {
 
 export async function addFriend(userId) {
   try {
-    const response = await axios.post("/user/friends/add", {
+    const response = await axios.post("/users/friends", {
       friendId: userId,
     });
     return response;
@@ -34,7 +34,7 @@ export async function addFriend(userId) {
 
 export async function removeFriend(userId) {
   try {
-    const response = await axios.delete("/user/friends/remove/" + userId);
+    const response = await axios.delete("/users/friends/" + userId);
     return response;
   } catch (error) {
     handleApiError(error);

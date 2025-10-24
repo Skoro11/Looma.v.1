@@ -26,7 +26,7 @@ export function ChatsList() {
   async function fetchUserChats() {
     try {
       const response = await getAllUserChats();
-      const chats = response.data.chat;
+      const chats = response.data.chats;
 
       const sideBarChats = chats.map((chat) => {
         if (chat.participants.length === 2) {
