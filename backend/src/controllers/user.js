@@ -98,12 +98,21 @@ export async function LoginUser(req, res) {
 }
 export async function Logout(req, res) {
   try {
-    res.clearCookie("looma_token", { path: "/" });
-    res.status(200).json({ message: "Token cleared" });
+    // Clear the cookie with all the same options used when setting it
+    res.clearCookie("looma_token", {
+      httpOnly: true,
+      secure: true, // must match login cookie
+      sameSite: "none", // must match login cookie
+      path: "/", // ensure path matches login cookie
+    });
+
+    res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {
-    console.log(error.message);
+    console.error("Logout error:", error.message);
+    res.status(500).json({ success: false, error: error.message });
   }
 }
+
 export async function GetAllNonFriends(req, res) {
   try {
     const { id } = req.user;
