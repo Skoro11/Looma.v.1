@@ -30,7 +30,7 @@ export async function createChat(req, res) {
         .sort({ createdAt: 1 }); // oldest first
       return res
         .status(201)
-        .json({ success: true, chat: chat._id, messages: messages });
+        .json({ success: true, chatId: chat._id, messages: messages });
     }
     if (chat) {
       chatId = chat._id;

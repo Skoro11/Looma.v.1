@@ -14,7 +14,7 @@ export const ChatProvider = ({ children }) => {
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [isMobileChatVisible, setIsMobileChatVisible] = useState(false);
   const [localGroup, setLocalGroup] = useState([]);
-  const [groupName, setGroupName] = useState("Frontend Mentors");
+  const [groupName, setGroupName] = useState("");
   const [chatSettingsVisible, setChatSettingsVisible] = useState(false);
   return (
     <ChatContext.Provider

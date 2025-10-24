@@ -56,6 +56,7 @@ export function ChatWindow() {
   }
   async function DeleteChat(chat_id) {
     const response = await RemoveChat(chat_id);
+    console.log(response);
     if (response.data.success === true) {
       toast.success("Chat deleted successfully");
 

@@ -6,9 +6,9 @@ POST {{BASE_URL}}/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "toni",
-  "email": "toni@test",
-  "password": "strongpassword"
+  "username": "Looma_user",
+  "email": "looma@test",
+  "password": "loomatest"
 }
 
 ### Login User
@@ -17,8 +17,8 @@ POST {{BASE_URL}}/api/auth/login
 Content-Type: application/json
 
 {
- "email": "toni@test",
-  "password": "strongpassword"
+ "email": "looma@test",
+  "password": "loomatest"
 }
 
 ### Check the token and allow access

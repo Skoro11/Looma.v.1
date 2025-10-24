@@ -1,34 +1,14 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Check } from "lucide-react";
-import {
-  createGroupChat,
-  deleteGroupChat,
-  getGroupChat,
-  getGroupChatWithChatId,
-} from "../../services/chatService";
+import { createGroupChat, getGroupChat } from "../../services/chatService";
 import UserIcon from "../icons/UserIcon";
 import { useChatContext } from "../../context/ChatContext";
 import { useUserContext } from "../../context/UserContext";
 export default function GroupList() {
   const { userFriends } = useUserContext();
-  const {
-    setIsChatVisible,
-    setMessages,
-    currentChat,
-    setCurrentChat,
-    setActiveUserId,
-    setActiveUsername,
-    sctiveUsername,
-    group,
-    setGroup,
-    groupName,
-    setGroupName,
-    localGroup,
-    setLocalGroup,
-  } = useChatContext();
-
-  const [showGroup, setShowGroup] = useState(true);
+  const { setGroup, groupName, setGroupName, localGroup, setLocalGroup } =
+    useChatContext();
 
   function addToTempGroup(userId, username) {
     if (localGroup.some((user) => user._id === userId)) return;
@@ -69,7 +49,7 @@ export default function GroupList() {
   async function getGroup() {
     try {
       const response = await getGroupChat();
-      const chatsArray = response.data.chat;
+      const chatsArray = response.data.chats;
       if (response.status === 200) {
         setGroup(chatsArray);
       }

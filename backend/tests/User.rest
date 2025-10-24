@@ -32,4 +32,4 @@ Authorization: Bearer {{TOKEN}}
 
 ###
 
-DELETE {{BASE_URL}}/users
+DELETE {{BASE_URL}}/api/users

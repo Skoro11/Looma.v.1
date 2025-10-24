@@ -31,7 +31,7 @@ export function UserList() {
     }
   }
   return (
-    <ul className=" md:min-h-0 md:overflow-y-scroll md:h-screen md:scrollbar-hide md:max-h-[460px] relative  md:p-0">
+    <ul className=" md:min-h-0 md:overflow-y-scroll md:h-screen scrollbar-hide md:max-h-[460px] relative  md:p-0">
       <h1 className="ml-2 md:mx-4">Add friends</h1>
       {otherUsers.map((item) => (
         <div

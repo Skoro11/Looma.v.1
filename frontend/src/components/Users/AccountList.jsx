@@ -3,12 +3,16 @@ import { LogOut } from "lucide-react";
 import { LogoutUser } from "../../services/authService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+
 export function AccountList() {
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuthContext();
   async function Logout() {
     try {
       const response = await LogoutUser();
       if (response) {
+        setIsAuthenticated(false);
         navigate("/login");
         toast.success("Successfully logged out");
       }

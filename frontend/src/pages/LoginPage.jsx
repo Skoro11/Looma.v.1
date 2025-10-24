@@ -17,10 +17,10 @@ function LoginPage() {
     e.preventDefault();
     try {
       const data = await LoginUser(userEmail, userPassword);
-
+      console.log(data);
       if (data && data.success === true) {
         toast.success(data.message);
-        /* navigate("/dashboard"); */
+
         setIsAuthenticated(data.success);
       }
     } catch (error) {
@@ -30,6 +30,7 @@ function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-body)] px-4">
       <div className="bg-[var(--color-accent)] shadow-2xl rounded-2xl p-8 sm:p-10 w-full max-w-md text-white">
+        <div>Credentials Email:looma@test Password:loomatest </div>
         {/* Logo + Title */}
         <h1 className="flex items-center justify-center text-3xl sm:text-4xl font-bold mb-6 gap-3">
           <img

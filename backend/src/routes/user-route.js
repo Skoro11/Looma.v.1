@@ -25,6 +25,6 @@ router.delete("/friends/:id", TokenVerification, RemoveFriend);
 Get all friends from the user */
 router.get("/friends", TokenVerification, GetFriends);
 
-/* router.delete("/", DeleteAllUsers); */
+router.delete("", DeleteAllUsers);
 
 export default router;
