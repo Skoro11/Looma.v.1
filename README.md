@@ -1,6 +1,8 @@
 Looma – Real-Time Chat Application
 
 Looma is a full-stack, real-time chat application that allows users to communicate securely with friends and groups. Built with React, Node.js, and MongoDB, Looma supports authentication, friend management, group chats, and live messaging.
+
+Live Demo https://looma-v-1.vercel.app/
 # Preview
 
 <img width="1028" height="510" alt="looma-photo" src="https://github.com/user-attachments/assets/c6b2aad2-c554-44ee-9e18-3f53b9b1139d" />
