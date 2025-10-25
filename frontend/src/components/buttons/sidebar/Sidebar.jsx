@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Search } from "lucide-react";
 import {
   ChatsButton,
   ContactsButton,
   FriendsButton,
   GroupButton,
   AccountButton,
+  SearchButton,
 } from "./SidebarButtons";
 import { useChatContext } from "../../../context/ChatContext";
 export default function Sidebar() {
@@ -21,6 +22,11 @@ export default function Sidebar() {
     },
     { icon: <FriendsButton />, label: "Friends", state: "friends" },
     { icon: <GroupButton />, label: "Groups", state: "group" },
+    {
+      icon: <SearchButton />,
+      label: "Search",
+      state: "search",
+    },
     {
       icon: <AccountButton />,
       label: "My Account",

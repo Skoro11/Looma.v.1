@@ -14,6 +14,7 @@ import {
   FriendsButton,
   ContactsButton,
   AccountButton,
+  SearchButton,
 } from "../components/buttons/sidebar/SidebarButtons.jsx";
 import SearchBar from "../components/SearchBar";
 import UserIcon from "../components/icons/UserIcon";
@@ -23,6 +24,7 @@ import { useUserContext } from "../context/UserContext";
 import { fetchUserFriends, getNonFriends } from "../services/userService";
 import { RemoveChat, sendAMessage } from "../services/chatService";
 import AccountList from "../components/Users/AccountList";
+import { SearchList } from "../components/Users/SearchList.jsx";
 import { ChatsList } from "../components/Users/ChatsList";
 import { socket } from "../utils/socket";
 import { ArrowUpButton } from "../components/buttons/ArrowUpButton.jsx";
@@ -140,6 +142,10 @@ export function LandingPage() {
                 listStateValue="friends"
               />
               <GroupButton listState={setListState} listStateValue={"group"} />
+              <SearchButton
+                listState={setListState}
+                listStateValue={"search"}
+              />
             </div>
             <div className="mt-2">
               <AccountButton
@@ -306,6 +312,34 @@ export function LandingPage() {
                     return (
                       <>
                         <ChatWindow />
+                      </>
+                    );
+                  case "search":
+                    return (
+                      <>
+                        <div className="md:hidden fixed top-0 left-0 z-[100] w-full bg-[var(--color-accent)] flex items-center px-4 py-3 shadow-md border-b border-[var(--color-messages)]">
+                          {/* Back button */}
+                          <button
+                            onClick={() => setListState("chats")}
+                            className="mr-3 p-2 rounded-full hover:bg-white/10 transition-colors"
+                            aria-label="Go Back"
+                          >
+                            <ArrowLeft className="w-5 h-5 text-white" />
+                          </button>
+
+                          {/* Search bar */}
+                          <div className="flex-1">
+                            <SearchBar />
+                          </div>
+
+                          {/* Sidebar / Three dots */}
+                          <div className="ml-3">
+                            <Sidebar />
+                          </div>
+                        </div>
+                        <div className="mt-15 md:mt-0">
+                          <SearchList />
+                        </div>
                       </>
                     );
                   default:

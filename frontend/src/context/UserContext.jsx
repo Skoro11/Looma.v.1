@@ -7,10 +7,15 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({ id: "", email: "", username: "" });
   const [otherUsers, setOtherUsers] = useState([]);
   const [userFriends, setUserFriends] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState("Toni");
+  const [searchResult, setSearchResult] = useState([]);
   return (
     <UserContext.Provider
       value={{
+        searchTerm,
+        setSearchTerm,
+        searchResult,
+        setSearchResult,
         user,
         setUser,
         otherUsers,

@@ -5,6 +5,7 @@ import {
   GetAllNonFriends,
   GetFriends,
   RemoveFriend,
+  searchUsers,
 } from "../controllers/user.js";
 const router = express.Router();
 import { TokenVerification } from "../utils/JWToken.js";
@@ -24,6 +25,10 @@ router.delete("/friends/:id", TokenVerification, RemoveFriend);
 /* GET /users/friends/all
 Get all friends from the user */
 router.get("/friends", TokenVerification, GetFriends);
+
+/* POST /users/search
+Searches users based on query it excludes me */
+router.get("/search", TokenVerification, searchUsers);
 
 router.delete("", DeleteAllUsers);
 

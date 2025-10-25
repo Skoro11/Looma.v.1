@@ -41,3 +41,13 @@ export async function removeFriend(userId) {
     throw error;
   }
 }
+
+export async function searchByQuery(query) {
+  try {
+    const response = await axios.get(`/users/search?q=${query}`);
+    return response;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+}

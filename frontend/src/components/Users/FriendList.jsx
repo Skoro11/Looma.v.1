@@ -64,6 +64,7 @@ export function FriendList() {
   return (
     <ul className="md:overflow-y-scroll h-screen scrollbar-hide md:max-h-115">
       <h1 className=" mx-2 md:mx-4">My Friends</h1>
+
       {userFriends.map((item) => (
         <div
           key={item._id}

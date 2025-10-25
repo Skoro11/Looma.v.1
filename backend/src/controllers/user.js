@@ -235,3 +235,25 @@ export async function DeleteAllUsers(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
+export async function searchUsers(req, res) {
+  try {
+    const { id } = req.user;
+    const query = req.query.q?.trim();
+    console.log("Main user id", id);
+
+    if (!query) return res.json({ message: "No query", users: [] });
+
+    const users = await User.find({
+      username: { $regex: query, $options: "i" },
+      _id: { $ne: id }, // exclude logged-in user
+    })
+      .select("-password")
+      .limit(10);
+
+    res.status(200).json({ users: users });
+  } catch (error) {
+    console.log("Search users error", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+}

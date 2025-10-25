@@ -30,6 +30,10 @@ GET {{BASE_URL}}/api/users/friends
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
-###
+### Filters users based on query
+GET {{BASE_URL}}/api/users/search?q=a
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
+###
 DELETE {{BASE_URL}}/api/users
