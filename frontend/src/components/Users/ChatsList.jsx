@@ -22,39 +22,6 @@ export function ChatsList() {
 
   const { user } = useUserContext();
 
-  let myId = user.id;
-  async function fetchUserChats() {
-    try {
-      const response = await getAllUserChats();
-      const chats = response.data.chats;
-
-      const sideBarChats = chats.map((chat) => {
-        if (chat.participants.length === 2) {
-          const other = chat.participants.find((item) => item._id !== myId);
-
-          const lastMessage = chat.lastMessage;
-
-          return {
-            chatId: chat._id,
-            name: other.username,
-            lastMessage: lastMessage || "",
-          };
-        } else {
-          const lastMessage = chat.lastMessage;
-          return {
-            chatId: chat._id,
-            name: chat.name,
-            lastMessage: lastMessage || "",
-          };
-        }
-      });
-
-      setAllUserChats(sideBarChats);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
   async function openChat(chatId, username) {
     try {
       const response = await getChatBasedOnId(chatId);
@@ -73,9 +40,7 @@ export function ChatsList() {
       toast.error(error.message);
     }
   }
-  useEffect(() => {
-    fetchUserChats();
-  }, []);
+
   return (
     <div className="overflow-y-scroll h-full scrollbar-hide md:max-h-115">
       <AnimatePresence>

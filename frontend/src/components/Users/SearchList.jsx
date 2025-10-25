@@ -22,7 +22,7 @@ export function SearchList() {
   async function StartChat(friend_id, itemUsername) {
     try {
       const response = await CreateOrOpenChat(friend_id);
-      console.log(response);
+
       if (response.data.success === true) {
         toast.success("Chat successfully created");
         setIsChatVisible(true);

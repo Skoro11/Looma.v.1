@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { CheckToken } from "../services/authService.js";
 import Sidebar from "../components/buttons/sidebar/Sidebar.jsx";
 import { toast } from "react-toastify";
-
+import { getAllUserChats } from "../services/chatService";
 import { UserList } from "../components/Users/UserList";
 import { FriendList } from "../components/Users/FriendList";
 import { getHoursAndMinutes } from "../utils/TimeConverter";
@@ -89,6 +89,7 @@ export function LandingPage() {
     const response = await CheckToken();
     const user = response.data.user;
     setUser({ id: user.id, email: user.email, username: user.username });
+    return user;
   }
   async function getUsers() {
     const response = await getNonFriends();
@@ -120,8 +121,45 @@ export function LandingPage() {
       toast.error(error.response.data.message);
     }
   }
+  async function fetchUserChats(user) {
+    try {
+      const response = await getAllUserChats();
+      const chats = response.data.chats;
+
+      const sideBarChats = chats.map((chat) => {
+        if (chat.participants.length === 2) {
+          const other = chat.participants.find((item) => item._id !== user.id);
+
+          const lastMessage = chat.lastMessage;
+
+          return {
+            chatId: chat._id,
+            name: other.username,
+            lastMessage: lastMessage || "",
+          };
+        } else {
+          const lastMessage = chat.lastMessage;
+          return {
+            chatId: chat._id,
+            name: chat.name,
+            lastMessage: lastMessage || "",
+          };
+        }
+      });
+
+      setAllUserChats(sideBarChats);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+  useEffect(() => {}, []);
+
   useEffect(() => {
-    TokenResponse();
+    async function init() {
+      const user = await TokenResponse();
+      await fetchUserChats(user);
+    }
+    init();
     getUsers();
     getUserFriends();
   }, []);

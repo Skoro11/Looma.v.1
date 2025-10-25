@@ -10,13 +10,12 @@ function SearchBar({ onClick }) {
   const { setListState } = useChatContext();
   async function sendQuery(searchTerm) {
     try {
-      console.log(searchTerm);
       if (!searchTerm || searchTerm.trim().length === 0) {
         toast.warning("Search query is empty");
         return null;
       }
       const response = await searchByQuery(searchTerm);
-      console.log(response.data.users);
+
       setListState("search");
       if (response.data.users.length > 0) {
         setSearchResult(response.data.users);
